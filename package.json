@@ -1,0 +1,75 @@
+{
+  "name": "beds24-booking-sdk",
+  "version": "0.1.1",
+  "description": "All-in-one booking SDK integrating Beds24 (PMS), Stripe (payments), and Resend (email). Handles availability, pricing, checkout, booking creation, and notifications.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WataruShirako/beds24-booking-sdk.git"
+  },
+  "homepage": "https://github.com/WataruShirako/beds24-booking-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/WataruShirako/beds24-booking-sdk/issues"
+  },
+  "keywords": [
+    "beds24",
+    "booking",
+    "reservation",
+    "stripe",
+    "pms",
+    "property-management",
+    "hotel",
+    "vacation-rental"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./beds24": {
+      "types": "./dist/beds24/index.d.ts",
+      "default": "./dist/beds24/index.js"
+    },
+    "./payment": {
+      "types": "./dist/payment/index.d.ts",
+      "default": "./dist/payment/index.js"
+    },
+    "./email": {
+      "types": "./dist/email/index.d.ts",
+      "default": "./dist/email/index.js"
+    },
+    "./pricing": {
+      "types": "./dist/pricing/index.d.ts",
+      "default": "./dist/pricing/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.ja.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "peerDependencies": {
+    "stripe": ">=15.0.0",
+    "resend": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "resend": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}
