@@ -1,5 +1,14 @@
 import type { BookingEmailData, EmailContent, PropertyConfig } from "../types";
 
+/**
+ * Built-in email templates for booking confirmation / owner notification.
+ *
+ * **These templates are localized to Japanese** and are intended for
+ * Japanese-speaking properties. For other locales, supply a custom
+ * `BookingEmailTemplates` pair via `BookingSDKConfig.templates` or
+ * `WebhookHandlerConfig.templates`.
+ */
+
 function escapeHtml(str: string): string {
   return str
     .replace(/&/g, "&amp;")

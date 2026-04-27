@@ -29,12 +29,12 @@ export class EmailSender {
         ...(replyTo ? { replyTo } : {}),
       });
       if (error) {
-        console.error("Resend error:", error);
+        console.error("[beds24-booking-sdk] Resend returned an error:", error);
         return false;
       }
       return true;
     } catch (err) {
-      console.error("Failed to send email:", err);
+      console.error("[beds24-booking-sdk] Failed to send email:", err);
       return false;
     }
   }
@@ -55,16 +55,18 @@ export class EmailSender {
       text: params.guestText,
       replyTo: this.config.replyTo || undefined,
     });
-    console.log(guestSent ? "Guest email sent" : "Guest email failed", params.guestEmail);
+    console.log(
+      `[beds24-booking-sdk] Guest email ${guestSent ? "sent" : "failed"} (${params.guestEmail})`,
+    );
 
     let ownerSent = false;
     if (this.config.owner) {
       let ownerHtml = params.ownerHtml;
       let ownerText = params.ownerText;
       if (!guestSent) {
-        const alert = `<div style="background:#f8d7da;color:#721c24;padding:12px 16px;margin-bottom:16px;border-radius:4px;font-family:sans-serif;font-size:14px;"><strong>⚠ ゲストへの確認メール送信に失敗しました</strong><br/>宛先: ${params.guestEmail}<br/>手動でゲストにご連絡ください。</div>`;
+        const alert = `<div style="background:#f8d7da;color:#721c24;padding:12px 16px;margin-bottom:16px;border-radius:4px;font-family:sans-serif;font-size:14px;"><strong>⚠ Guest confirmation email failed to send</strong><br/>Recipient: ${params.guestEmail}<br/>Please contact the guest manually.</div>`;
         ownerHtml = alert + ownerHtml;
-        ownerText = `⚠ ゲストへの確認メール送信失敗（宛先: ${params.guestEmail}）\n手動でゲストにご連絡ください。\n\n${ownerText}`;
+        ownerText = `⚠ Guest confirmation email failed to send (recipient: ${params.guestEmail}).\nPlease contact the guest manually.\n\n${ownerText}`;
       }
 
       ownerSent = await this.send({
@@ -73,7 +75,9 @@ export class EmailSender {
         html: ownerHtml,
         text: ownerText,
       });
-      console.log(ownerSent ? "Owner email sent" : "Owner email failed", this.config.owner);
+      console.log(
+        `[beds24-booking-sdk] Owner email ${ownerSent ? "sent" : "failed"} (${this.config.owner})`,
+      );
     }
 
     return { guestSent, ownerSent };

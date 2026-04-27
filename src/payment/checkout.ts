@@ -11,8 +11,23 @@ export interface CreateCheckoutParams {
   baseUrl: string;
 }
 
+/**
+ * Stable error codes returned by {@link createCheckoutSession}. Use these
+ * (rather than the English `error` text) when localizing or branching on
+ * errors in your UI.
+ */
+export type CheckoutErrorCode =
+  | "VALIDATION_FAILED"
+  | "INVALID_PRICE"
+  | "PRICE_CACHE_EXPIRED"
+  | "PRICE_MISMATCH";
+
 export interface CheckoutError {
+  /** Stable, locale-independent error code. */
+  code: CheckoutErrorCode;
+  /** Default English message. Consumers should localize from {@link code}. */
   error: string;
+  /** Suggested HTTP status to return to the client. */
   status: number;
 }
 
@@ -24,7 +39,11 @@ export async function createCheckoutSession(
   // Validate input
   const validation = validateCheckoutRequest(request, property);
   if (!validation.valid) {
-    return { error: validation.errors[0].message, status: 400 };
+    return {
+      code: "VALIDATION_FAILED",
+      error: validation.errors[0].message,
+      status: 400,
+    };
   }
 
   const s = validation.sanitized!;
@@ -32,7 +51,11 @@ export async function createCheckoutSession(
   // Price verification
   const clientTotal = Math.floor(Number(request.totalPrice) || 0);
   if (clientTotal <= 0) {
-    return { error: "料金の計算に失敗しました", status: 400 };
+    return {
+      code: "INVALID_PRICE",
+      error: "Could not compute a valid price.",
+      status: 400,
+    };
   }
 
   const cached = priceCache.calculateTotal(
@@ -45,15 +68,17 @@ export async function createCheckoutSession(
 
   if (cached === null) {
     return {
-      error: "料金情報の有効期限が切れました。ページを再読み込みしてください。",
+      code: "PRICE_CACHE_EXPIRED",
+      error: "Cached price information is missing or expired. Reload the page and try again.",
       status: 409,
     };
   }
 
   if (clientTotal !== cached.total) {
-    console.error("Price tamper detected!", { clientTotal, serverTotal: cached.total });
+    console.error("Price tamper detected", { clientTotal, serverTotal: cached.total });
     return {
-      error: "料金が一致しません。ページを再読み込みして最新の料金をご確認ください。",
+      code: "PRICE_MISMATCH",
+      error: "Submitted total does not match the server-computed price.",
       status: 409,
     };
   }
@@ -69,8 +94,8 @@ export async function createCheckoutSession(
         price_data: {
           currency: "jpy",
           product_data: {
-            name: `${property.name} — ${s.nights}泊`,
-            description: `${request.checkIn.replace(/-/g, "/")} 〜 ${request.checkOut.replace(/-/g, "/")} / ${s.guests}名`,
+            name: `${property.name} — ${s.nights} ${s.nights === 1 ? "night" : "nights"}`,
+            description: `${request.checkIn} → ${request.checkOut} / ${s.guests} ${s.guests === 1 ? "guest" : "guests"}`,
           },
           unit_amount: totalPrice,
         },

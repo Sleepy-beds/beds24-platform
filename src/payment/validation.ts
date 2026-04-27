@@ -4,7 +4,7 @@ const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_REGEX = /^[\d\-+()\s]{7,20}$/;
 
-/** Strip HTML/script tags and trim to max length */
+/** Strip HTML/script tags and trim to max length. */
 export function sanitize(input: unknown, maxLength = 500): string {
   if (typeof input !== "string") return "";
   return input
@@ -20,31 +20,44 @@ export function validateCheckoutRequest(
   const errors: ValidationResult["errors"] = [];
 
   if (!req.checkIn || !req.checkOut || !req.guestName || !req.guestEmail || !req.guestPhone) {
-    errors.push({ field: "required", message: "必須項目が不足しています" });
+    errors.push({
+      field: "required",
+      code: "MISSING_REQUIRED_FIELDS",
+      message: "Required fields are missing.",
+    });
     return { valid: false, errors };
   }
 
   if (!DATE_REGEX.test(req.checkIn) || !DATE_REGEX.test(req.checkOut)) {
-    errors.push({ field: "date", message: "日付の形式が不正です" });
+    errors.push({
+      field: "date",
+      code: "INVALID_DATE_FORMAT",
+      message: "Dates must be in YYYY-MM-DD format.",
+    });
   }
 
   if (
     Number.isNaN(new Date(req.checkIn).getTime()) ||
     Number.isNaN(new Date(req.checkOut).getTime())
   ) {
-    errors.push({ field: "date", message: "無効な日付です" });
+    errors.push({ field: "date", code: "INVALID_DATE", message: "Invalid date value." });
   }
 
   if (errors.length === 0 && req.checkIn >= req.checkOut) {
     errors.push({
       field: "date",
-      message: "チェックアウトはチェックインより後の日付にしてください",
+      code: "CHECKOUT_NOT_AFTER_CHECKIN",
+      message: "checkOut must be later than checkIn.",
     });
   }
 
   const today = new Date().toISOString().slice(0, 10);
   if (req.checkIn < today) {
-    errors.push({ field: "checkIn", message: "過去の日付は予約できません" });
+    errors.push({
+      field: "checkIn",
+      code: "PAST_CHECK_IN_DATE",
+      message: "checkIn cannot be in the past.",
+    });
   }
 
   const nights = Math.round(
@@ -53,15 +66,24 @@ export function validateCheckoutRequest(
   if (nights <= 0 || nights > property.maxStayNights) {
     errors.push({
       field: "nights",
-      message: `1〜${property.maxStayNights}泊の範囲で指定してください`,
+      code: "INVALID_NIGHTS",
+      message: `Stay length must be between 1 and ${property.maxStayNights} nights.`,
     });
   }
 
   if (!EMAIL_REGEX.test(String(req.guestEmail))) {
-    errors.push({ field: "guestEmail", message: "メールアドレスの形式が不正です" });
+    errors.push({
+      field: "guestEmail",
+      code: "INVALID_EMAIL",
+      message: "guestEmail is not a valid email address.",
+    });
   }
   if (!PHONE_REGEX.test(String(req.guestPhone))) {
-    errors.push({ field: "guestPhone", message: "電話番号の形式が不正です" });
+    errors.push({
+      field: "guestPhone",
+      code: "INVALID_PHONE",
+      message: "guestPhone is not a valid phone number.",
+    });
   }
 
   if (errors.length > 0) {

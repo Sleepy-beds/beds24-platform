@@ -3,6 +3,8 @@
 // Beds24 + Stripe + Resend を統合した宿泊予約SDK
 // ============================================================
 
+import type { IdempotencyStore } from "./payment/idempotency";
+
 // --- SDK Configuration ---
 
 export interface Beds24Config {
@@ -49,6 +51,19 @@ export interface BookingSDKConfig {
   email: EmailConfig;
   property: PropertyConfig;
   baseUrl: string;
+  /**
+   * Custom store for Stripe webhook idempotency. Defaults to a process-local
+   * in-memory store, which is **not safe for multi-instance or serverless
+   * production environments** — supply a shared, persistent implementation
+   * (Redis, DynamoDB, Postgres, etc.) in production.
+   */
+  idempotencyStore?: IdempotencyStore;
+  /**
+   * Custom guest / owner confirmation email templates. Defaults to the
+   * built-in Japanese templates (see `email/templates.ts`). Provide your own
+   * to localize the confirmation emails sent by `handlePaymentWebhook`.
+   */
+  templates?: BookingEmailTemplates;
 }
 
 // --- Beds24 Types ---
@@ -166,6 +181,16 @@ export interface SendEmailResult {
   ownerSent: boolean;
 }
 
+/**
+ * Pluggable email template generators. Pass a custom pair via
+ * {@link BookingSDKConfig.templates} (or `WebhookHandlerConfig.templates`)
+ * to localize confirmation emails for non-Japanese audiences.
+ */
+export interface BookingEmailTemplates {
+  guest: (data: BookingEmailData, property: PropertyConfig) => EmailContent;
+  owner: (data: BookingEmailData, property: PropertyConfig) => EmailContent;
+}
+
 // --- Pricing Types ---
 
 export interface PriceCalculation {
@@ -182,8 +207,26 @@ export interface Availability {
 
 // --- Validation ---
 
+/**
+ * Stable error codes returned by {@link validateCheckoutRequest}. Use these
+ * (rather than the English `message`) when localizing or branching on errors
+ * in your UI.
+ */
+export type ValidationErrorCode =
+  | "MISSING_REQUIRED_FIELDS"
+  | "INVALID_DATE_FORMAT"
+  | "INVALID_DATE"
+  | "CHECKOUT_NOT_AFTER_CHECKIN"
+  | "PAST_CHECK_IN_DATE"
+  | "INVALID_NIGHTS"
+  | "INVALID_EMAIL"
+  | "INVALID_PHONE";
+
 export interface ValidationError {
   field: string;
+  /** Stable, locale-independent error code. */
+  code: ValidationErrorCode;
+  /** Default English message. Consumers should localize from {@link code}. */
   message: string;
 }
 

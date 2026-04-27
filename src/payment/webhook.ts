@@ -1,8 +1,12 @@
 import type Stripe from "stripe";
 import type { Beds24Client } from "../beds24/client";
 import type { EmailSender } from "../email/sender";
-import { generateBookingConfirmationEmail, generateOwnerNotificationEmail } from "../email/templates";
-import type { PropertyConfig, WebhookResult } from "../types";
+import {
+  generateBookingConfirmationEmail,
+  generateOwnerNotificationEmail,
+} from "../email/templates";
+import type { BookingEmailTemplates, PropertyConfig, WebhookResult } from "../types";
+import { type IdempotencyStore, InMemoryIdempotencyStore } from "./idempotency";
 
 export interface WebhookHandlerConfig {
   stripe: Stripe;
@@ -11,28 +15,34 @@ export interface WebhookHandlerConfig {
   roomId: number;
   emailSender: EmailSender;
   property: PropertyConfig;
+  /**
+   * Store used to deduplicate Stripe webhook deliveries. Defaults to a
+   * process-local in-memory store, which is **not safe for multi-instance or
+   * serverless production environments** — provide a shared, persistent store
+   * (Redis, DynamoDB, Postgres, etc.) in production.
+   */
+  idempotencyStore?: IdempotencyStore;
+  /**
+   * Custom guest / owner confirmation email templates. Defaults to the
+   * built-in Japanese templates.
+   */
+  templates?: BookingEmailTemplates;
 }
 
-// Simple in-memory idempotency guard
-const processedEvents = new Set<string>();
-const MAX_PROCESSED_EVENTS = 1000;
-
-function markEventProcessed(eventId: string) {
-  if (processedEvents.size >= MAX_PROCESSED_EVENTS) {
-    const iterator = processedEvents.values();
-    for (let i = 0; i < 100; i++) {
-      const val = iterator.next().value;
-      if (val) processedEvents.delete(val);
-    }
-  }
-  processedEvents.add(eventId);
-}
+const defaultStore = new InMemoryIdempotencyStore();
+const defaultTemplates: BookingEmailTemplates = {
+  guest: generateBookingConfirmationEmail,
+  owner: generateOwnerNotificationEmail,
+};
 
 export async function handleWebhook(
   rawBody: string,
   signature: string,
   config: WebhookHandlerConfig,
 ): Promise<WebhookResult> {
+  const store = config.idempotencyStore ?? defaultStore;
+  const templates = config.templates ?? defaultTemplates;
+
   let event: Stripe.Event;
   try {
     event = config.stripe.webhooks.constructEvent(rawBody, signature, config.webhookSecret);
@@ -44,7 +54,7 @@ export async function handleWebhook(
     return { received: true };
   }
 
-  if (processedEvents.has(event.id)) {
+  if (await store.has(event.id)) {
     return { received: true };
   }
 
@@ -77,8 +87,8 @@ export async function handleWebhook(
       price: session.amount_total ?? 0,
       notes:
         [
-          metadata.checkInTime ? `チェックイン予定: ${metadata.checkInTime}` : "",
-          metadata.guestNameKana ? `カナ: ${metadata.guestNameKana}` : "",
+          metadata.checkInTime ? `Check-in time: ${metadata.checkInTime}` : "",
+          metadata.guestNameKana ? `Kana name: ${metadata.guestNameKana}` : "",
           metadata.notes || "",
         ]
           .filter(Boolean)
@@ -107,8 +117,8 @@ export async function handleWebhook(
       nights: Number(metadata.nights) || 1,
     };
 
-    const guestEmail = generateBookingConfirmationEmail(emailData, config.property);
-    const ownerEmail = generateOwnerNotificationEmail(emailData, config.property);
+    const guestEmail = templates.guest(emailData, config.property);
+    const ownerEmail = templates.owner(emailData, config.property);
 
     const emailResults = await config.emailSender.sendBookingEmails({
       guestEmail: metadata.guestEmail,
@@ -126,7 +136,7 @@ export async function handleWebhook(
     results.email = `FAILED: ${message}`;
   }
 
-  markEventProcessed(event.id);
+  await store.add(event.id);
 
   return { received: true, bookingId, results };
 }

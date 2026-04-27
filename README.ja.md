@@ -120,7 +120,38 @@ export async function POST(request: Request) {
 }
 ```
 
+#### 本番環境での冪等性 ⚠️
+
+Stripe は2xx以外を返すと Webhook を再送します。デフォルトの
+`InMemoryIdempotencyStore` はプロセスローカルなため、**サーバーレスや複数
+インスタンス構成ではプロセス再起動・他インスタンスへの配信で重複排除が効か
+ず、Beds24 に同じ予約が二重に作成される恐れがあります**。
+
+本番では `idempotencyStore` に永続化された共有ストア（Redis、DynamoDB、
+Postgres など）を渡してください。
+
+```typescript
+import type { IdempotencyStore } from "beds24-booking-sdk";
+
+const redisStore: IdempotencyStore = {
+  async has(id) {
+    return (await redis.exists(`stripe:evt:${id}`)) === 1;
+  },
+  async add(id) {
+    await redis.set(`stripe:evt:${id}`, "1", "EX", 60 * 60 * 24 * 7); // 7日間
+  },
+};
+
+const sdk = new BookingSDK({
+  // ...
+  idempotencyStore: redisStore,
+});
+```
+
 ### メールテンプレート単独利用
+
+このSDKに同梱されているメールテンプレートは **日本語ローカライズ済** です。
+`handlePaymentWebhook` から自動で使われますが、単独でも利用できます。
 
 ```typescript
 import {
@@ -130,6 +161,27 @@ import {
 
 const guestEmail = generateBookingConfirmationEmail(bookingData, propertyConfig);
 const ownerEmail = generateOwnerNotificationEmail(bookingData, propertyConfig);
+```
+
+非日本語向けに使う場合は、`BookingSDKConfig.templates` で独自テンプレートを
+注入してください（Webhook ハンドラがそちらを優先します）。
+
+### エラーハンドリングと多言語化
+
+`validateCheckoutRequest` / `createCheckout` の返すエラーには、**ロケール
+非依存の安定したコード**（`ValidationErrorCode` / `CheckoutErrorCode`）と
+英語のデフォルト `message` が含まれます。UI 側ではメッセージ文字列ではなく
+`code` で分岐してください。
+
+```typescript
+import { isCheckoutError } from "beds24-booking-sdk";
+
+const result = await sdk.createCheckout(req);
+if (isCheckoutError(result)) {
+  // result.code:
+  //   "VALIDATION_FAILED" | "INVALID_PRICE" | "PRICE_CACHE_EXPIRED" | "PRICE_MISMATCH"
+  showLocalizedError(result.code); // 日本語/英語など自由に変換可
+}
 ```
 
 ## サブモジュール

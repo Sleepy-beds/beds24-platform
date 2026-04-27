@@ -106,6 +106,8 @@ export class BookingSDK {
       roomId: this.config.beds24.roomId,
       emailSender: this.email,
       property: this.config.property,
+      idempotencyStore: this.config.idempotencyStore,
+      templates: this.config.templates,
     });
   }
 
@@ -127,6 +129,8 @@ export { generateBookingConfirmationEmail, generateOwnerNotificationEmail } from
 export { createCheckoutSession, isCheckoutError } from "./payment/checkout";
 export { handleWebhook } from "./payment/webhook";
 export { validateCheckoutRequest, sanitize } from "./payment/validation";
+export { InMemoryIdempotencyStore } from "./payment/idempotency";
+export type { IdempotencyStore } from "./payment/idempotency";
 export { PriceCache } from "./pricing/cache";
 export { calculateTotalPrice } from "./pricing/calculator";
 export * from "./types";

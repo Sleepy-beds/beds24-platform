@@ -121,9 +121,39 @@ export async function POST(request: Request) {
 }
 ```
 
+#### Idempotency in production ⚠️
+
+Stripe retries webhook deliveries on non-2xx responses. The default
+`InMemoryIdempotencyStore` is **process-local** — on serverless or
+multi-instance deployments, restarts and concurrent invocations across
+instances will not share dedup state and you may end up creating duplicate
+Beds24 bookings.
+
+For production, supply a shared, persistent store via `idempotencyStore`:
+
+```typescript
+import type { IdempotencyStore } from "beds24-booking-sdk";
+
+const redisStore: IdempotencyStore = {
+  async has(id) {
+    return (await redis.exists(`stripe:evt:${id}`)) === 1;
+  },
+  async add(id) {
+    await redis.set(`stripe:evt:${id}`, "1", "EX", 60 * 60 * 24 * 7); // 7 days
+  },
+};
+
+const sdk = new BookingSDK({
+  // ...
+  idempotencyStore: redisStore,
+});
+```
+
 ### Email Templates
 
-Use the built-in Japanese booking confirmation templates standalone:
+The SDK ships with built-in **Japanese-localized** confirmation email
+templates. They are used by `handlePaymentWebhook` by default. You can
+also call them directly:
 
 ```typescript
 import {
@@ -133,6 +163,47 @@ import {
 
 const guestEmail = generateBookingConfirmationEmail(bookingData, propertyConfig);
 const ownerEmail = generateOwnerNotificationEmail(bookingData, propertyConfig);
+```
+
+For **non-Japanese audiences**, supply your own templates via
+`BookingSDKConfig.templates` — the webhook handler will use them instead of
+the Japanese defaults:
+
+```typescript
+import type { BookingEmailTemplates } from "beds24-booking-sdk";
+
+const englishTemplates: BookingEmailTemplates = {
+  guest: (data, property) => ({
+    subject: `[${property.name}] Reservation confirmed (${data.checkIn} → ${data.checkOut})`,
+    html: `<p>Dear ${data.guestName}, your booking ${data.bookingId} is confirmed…</p>`,
+    text: `Dear ${data.guestName}, your booking ${data.bookingId} is confirmed…`,
+  }),
+  owner: (data) => ({
+    subject: `[New booking] ${data.guestName} ${data.checkIn}→${data.checkOut}`,
+    html: `<pre>${data.bookingId} / ${data.guestEmail}</pre>`,
+    text: `${data.bookingId} / ${data.guestEmail}`,
+  }),
+};
+
+const sdk = new BookingSDK({ /* ... */, templates: englishTemplates });
+```
+
+### Error handling & localization
+
+`validateCheckoutRequest` and `createCheckout` return errors with **stable,
+locale-independent codes** (`ValidationErrorCode`, `CheckoutErrorCode`) plus
+a default English `message`. Switch on `code` in your UI rather than parsing
+the message:
+
+```typescript
+import { isCheckoutError } from "beds24-booking-sdk";
+
+const result = await sdk.createCheckout(req);
+if (isCheckoutError(result)) {
+  // result.code is one of:
+  //   "VALIDATION_FAILED" | "INVALID_PRICE" | "PRICE_CACHE_EXPIRED" | "PRICE_MISMATCH"
+  showLocalizedError(result.code);
+}
 ```
 
 ## Submodule Imports
