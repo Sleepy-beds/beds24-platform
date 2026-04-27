@@ -56,7 +56,7 @@ export class BookingSDK {
       guests,
       this.config.beds24.propertyId,
     );
-    return offers.some((offer) => offer.available !== false);
+    return offers.some((room) => (room.offers ?? []).some((o) => (o.unitsAvailable ?? 0) > 0));
   }
 
   // --- Pricing ---

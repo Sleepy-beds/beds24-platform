@@ -132,7 +132,10 @@ export class Beds24Client {
     if (!res.ok) {
       throw new Error(`Failed to fetch offers: ${res.status}`);
     }
-    return (await res.json()) as Beds24Offer[];
+    // Beds24 v2 wraps the response: { success, type, count, pages, data: [...] }
+    // Older deployments may also return a bare array.
+    const json = (await res.json()) as { data?: Beds24Offer[] } | Beds24Offer[];
+    return Array.isArray(json) ? json : (json.data ?? []);
   }
 
   async createBooking(booking: Beds24BookingRequest): Promise<Beds24BookingResponse> {

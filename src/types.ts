@@ -89,12 +89,27 @@ export interface Beds24RoomCalendar {
   calendar: Beds24CalendarEntry[];
 }
 
+/**
+ * One offer entry returned for a room. A non-zero `unitsAvailable` means the
+ * room is available for the requested dates at this price/policy.
+ */
+export interface Beds24OfferEntry {
+  offerId: number;
+  offerName: string;
+  price: number;
+  unitsAvailable: number;
+  minStay?: number;
+}
+
+/**
+ * One row of the Beds24 `/inventory/rooms/offers` response, scoped to a room.
+ * The room is available iff `offers` contains at least one entry with
+ * `unitsAvailable > 0`.
+ */
 export interface Beds24Offer {
   roomId: number;
   propertyId: number;
-  available: boolean;
-  price: number;
-  minStay: number;
+  offers: Beds24OfferEntry[];
 }
 
 export interface Beds24BookingRequest {

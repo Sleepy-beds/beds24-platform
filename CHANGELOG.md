@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.0] - 2026-04-27
 
+### Fixed
+- `Beds24Client.getOffers` now correctly unwraps the Beds24 v2 envelope
+  (`{success, type, count, pages, data: [...]}`) instead of casting the raw
+  response as a flat array. The corresponding `Beds24Offer` type was also
+  rewritten to match the real response shape: each row is
+  `{ roomId, propertyId, offers: Beds24OfferEntry[] }`, where
+  `Beds24OfferEntry` carries `offerId`, `offerName`, `price`, and
+  `unitsAvailable`. `BookingSDK.checkAvailability` was updated accordingly
+  (room is available iff any nested offer has `unitsAvailable > 0`). The
+  pre-SDK code carried the same wrong assumption but only worked by accident
+  because callers checked `available !== false` on `undefined`.
+
 ### Added
 - `IdempotencyStore` interface and `InMemoryIdempotencyStore` for Stripe
   webhook deduplication. The default in-memory store can be replaced with a
