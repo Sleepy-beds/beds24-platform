@@ -1,0 +1,82 @@
+{
+  "name": "beds24-booking-sdk",
+  "version": "0.3.0",
+  "description": "All-in-one booking SDK integrating Beds24 (PMS), Stripe (payments), and Resend (email). Handles availability, pricing, checkout, booking creation, and notifications. Built on the beds24-sdk core.",
+  "license": "MIT",
+  "author": "Wataru Shirako (https://github.com/WataruShirako)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WataruShirako/beds24-booking-sdk.git",
+    "directory": "packages/booking"
+  },
+  "homepage": "https://github.com/WataruShirako/beds24-booking-sdk/tree/main/packages/booking#readme",
+  "bugs": {
+    "url": "https://github.com/WataruShirako/beds24-booking-sdk/issues"
+  },
+  "keywords": [
+    "beds24",
+    "booking",
+    "reservation",
+    "stripe",
+    "pms",
+    "property-management",
+    "hotel",
+    "vacation-rental"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./payment": {
+      "types": "./dist/payment/index.d.ts",
+      "default": "./dist/payment/index.js"
+    },
+    "./email": {
+      "types": "./dist/email/index.d.ts",
+      "default": "./dist/email/index.js"
+    },
+    "./pricing": {
+      "types": "./dist/pricing/index.d.ts",
+      "default": "./dist/pricing/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.ja.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "beds24-sdk": "workspace:*"
+  },
+  "peerDependencies": {
+    "stripe": ">=15.0.0",
+    "resend": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "resend": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "resend": "^4.0.0",
+    "stripe": "^17.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.9"
+  }
+}

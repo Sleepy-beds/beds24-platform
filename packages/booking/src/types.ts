@@ -1,13 +1,29 @@
 // ============================================================
 // beds24-booking-sdk — Type Definitions
 // Beds24 + Stripe + Resend を統合した宿泊予約SDK
+// Beds24 のAPI型は beds24-sdk（純粋コア）から再エクスポートする
 // ============================================================
+
+import type { Beds24ClientConfig } from "beds24-sdk";
+
+// Re-export the core Beds24 API types so consumers of this package can keep
+// importing them from one place.
+export type {
+  Beds24ClientConfig,
+  Beds24Property,
+  Beds24CalendarEntry,
+  Beds24RoomCalendar,
+  Beds24Offer,
+  Beds24BookingRequest,
+  Beds24BookingResponse,
+  Beds24Booking,
+} from "beds24-sdk";
+export { Beds24Error, isBeds24Error } from "beds24-sdk";
 
 // --- SDK Configuration ---
 
-export interface Beds24Config {
-  refreshToken: string;
-  accessToken?: string;
+/** Beds24 credentials plus the property/room this booking flow operates on. */
+export interface Beds24Config extends Beds24ClientConfig {
   propertyId?: number;
   roomId: number;
 }
@@ -51,60 +67,7 @@ export interface BookingSDKConfig {
   baseUrl: string;
 }
 
-// --- Beds24 Types ---
-
-export interface Beds24Property {
-  propertyId: number;
-  name: string;
-  rooms: { roomId: number; name: string }[];
-}
-
-export interface Beds24CalendarEntry {
-  from: string;
-  to: string;
-  numAvail?: number;
-  minStay?: number;
-  price1?: number;
-}
-
-export interface Beds24RoomCalendar {
-  roomId: number;
-  propertyId: number;
-  name?: string;
-  calendar: Beds24CalendarEntry[];
-}
-
-export interface Beds24Offer {
-  roomId: number;
-  propertyId: number;
-  available: boolean;
-  price: number;
-  minStay: number;
-}
-
-export interface Beds24BookingRequest {
-  roomId: number;
-  arrival: string;
-  departure: string;
-  numAdult: number;
-  numChild?: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  status?: "confirmed" | "request" | "new";
-  price?: number;
-  notes?: string;
-  infoItems?: { code: string; text: string }[];
-}
-
-export interface Beds24BookingResponse {
-  success: boolean;
-  new?: number[];
-  modified?: number[];
-  errors?: string[];
-  warnings?: string[];
-}
+// (Beds24 API entity types are re-exported from beds24-sdk above.)
 
 // --- Booking / Checkout Types ---
 

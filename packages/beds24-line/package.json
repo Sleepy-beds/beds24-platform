@@ -1,0 +1,58 @@
+{
+  "name": "beds24-line",
+  "version": "0.1.0",
+  "description": "LINE notifications for Beds24 booking events (new booking, cancellation, check-in reminder) via the LINE Messaging API. Built on beds24-sdk.",
+  "license": "MIT",
+  "author": "Wataru Shirako (https://github.com/WataruShirako)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WataruShirako/beds24-booking-sdk.git",
+    "directory": "packages/beds24-line"
+  },
+  "homepage": "https://github.com/WataruShirako/beds24-booking-sdk/tree/main/packages/beds24-line#readme",
+  "bugs": {
+    "url": "https://github.com/WataruShirako/beds24-booking-sdk/issues"
+  },
+  "keywords": [
+    "beds24",
+    "line",
+    "line-messaging-api",
+    "notification",
+    "booking",
+    "hotel",
+    "vacation-rental"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "beds24-sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.9"
+  }
+}
