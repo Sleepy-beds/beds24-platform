@@ -7,6 +7,7 @@ All packages publish to npm under the **`@sleepy-beds`** scope:
 | `packages/beds24-sdk` | `@sleepy-beds/beds24-sdk` |
 | `packages/booking` | `@sleepy-beds/beds24-booking-sdk` |
 | `packages/beds24-line` | `@sleepy-beds/beds24-line` |
+| `packages/beds24-nextjs` | `@sleepy-beds/beds24-nextjs` |
 
 Each package sets `publishConfig.access = "public"` (scoped packages are private by
 default) and ships its own `LICENSE`, `README.md`, and `dist/`.

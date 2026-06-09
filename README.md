@@ -13,7 +13,7 @@ payments, email, LINE, and framework integrations are layered on top of it — n
 | [`beds24-sdk`](packages/beds24-sdk) | `packages/beds24-sdk` | ✅ core | Typed, zero-dependency Beds24 API v2 client with structured errors. |
 | [`beds24-booking-sdk`](packages/booking) | `packages/booking` | ✅ | All-in-one booking flow (Beds24 + Stripe + Resend) built on the core. |
 | [`beds24-line`](packages/beds24-line) | `packages/beds24-line` | ✅ | LINE notifications for booking events (new booking / cancellation / check-in reminder). |
-| `beds24-nextjs` | _planned_ | ⬜ | Next.js helpers + route handlers. |
+| [`beds24-nextjs`](packages/beds24-nextjs) | `packages/beds24-nextjs` | ✅ | Next.js App Router route handlers (availability / calendar / checkout / webhook). |
 | `beds24-wordpress` | _planned_ | ⬜ | WordPress plugin. |
 | `examples/*` | _planned_ | ⬜ | Runnable Next.js / React / LINE bot examples. |
 
@@ -23,7 +23,7 @@ payments, email, LINE, and framework integrations are layered on top of it — n
 - [x] Structured `Beds24Error` with stable codes
 - [x] Unit tests + CI (GitHub Actions, Node 18/20/22)
 - [x] `beds24-line` — LINE notifications for booking events _(the differentiator)_
-- [ ] `beds24-nextjs` template
+- [x] `beds24-nextjs` — App Router route handlers
 - [ ] Docs site (Mintlify)
 - [ ] Examples (Next.js / React / LINE bot)
 - [ ] `beds24-wordpress` plugin
@@ -42,7 +42,8 @@ pnpm -r test
 ## Publishing
 
 All packages publish under the **`@sleepy-beds`** npm scope
-(`@sleepy-beds/beds24-sdk`, `@sleepy-beds/beds24-booking-sdk`, `@sleepy-beds/beds24-line`).
+(`@sleepy-beds/beds24-sdk`, `@sleepy-beds/beds24-booking-sdk`, `@sleepy-beds/beds24-line`,
+`@sleepy-beds/beds24-nextjs`).
 See **[PUBLISHING.md](PUBLISHING.md)** for the one-time npm-org setup and the
 manual / CI release steps.
 
