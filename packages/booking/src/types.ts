@@ -65,6 +65,14 @@ export interface BookingSDKConfig {
   email: EmailConfig;
   property: PropertyConfig;
   baseUrl: string;
+  /**
+   * Optional hook fired after a booking is successfully created from a paid
+   * checkout (inside the Stripe webhook). Use it to send a LINE notification,
+   * push to Slack, etc. Errors are caught and reported in the webhook result —
+   * they never fail the booking. Decoupled from any specific notifier so you
+   * can wire in `@sleepy-beds/beds24-line` (or anything) yourself.
+   */
+  onBookingCreated?: (booking: BookingNotification) => Promise<void> | void;
 }
 
 // (Beds24 API entity types are re-exported from beds24-sdk above.)
@@ -98,8 +106,28 @@ export interface WebhookResult {
   results?: {
     beds24?: string;
     email?: string;
+    notification?: string;
   };
   error?: string;
+}
+
+/**
+ * Payload passed to {@link BookingSDKConfig.onBookingCreated}. Its shape maps
+ * directly onto `@sleepy-beds/beds24-line`'s `BookingSummary`.
+ */
+export interface BookingNotification {
+  /** Local booking reference, e.g. `BK-1a2b3c4d`. */
+  bookingId: string;
+  /** The Beds24 booking id, when available. */
+  beds24BookingId?: number;
+  guestName: string;
+  checkIn: string;
+  checkOut: string;
+  guests: number;
+  totalPrice: number;
+  nights: number;
+  guestEmail: string;
+  guestPhone: string;
 }
 
 // --- Email Types ---

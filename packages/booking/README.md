@@ -121,6 +121,37 @@ export async function POST(request: Request) {
 }
 ```
 
+### LINE notification on booking (optional hook)
+
+Pass `onBookingCreated` in the SDK config to fire a side-effect after a paid booking is
+created — e.g. a LINE push via [`@sleepy-beds/beds24-line`](../beds24-line). It runs inside
+the webhook, is **best-effort** (errors are reported in `result.results.notification`, never
+failing the booking), and keeps this package decoupled from any specific notifier.
+
+```typescript
+import { BookingSDK } from "@sleepy-beds/beds24-booking-sdk";
+import { Beds24LineNotifier } from "@sleepy-beds/beds24-line";
+
+const line = new Beds24LineNotifier({
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN!,
+  to: process.env.LINE_GROUP_ID,
+});
+
+const sdk = new BookingSDK({
+  /* …beds24 / stripe / email / property… */
+  onBookingCreated: (b) =>
+    line.notifyBookingCreated({
+      guestName: b.guestName,
+      checkIn: b.checkIn,
+      checkOut: b.checkOut,
+      guests: b.guests,
+      totalPrice: b.totalPrice,
+      phone: b.guestPhone,
+    }),
+});
+// → 🎉 新規予約が入りました … delivered to your LINE group
+```
+
 ### Email Templates
 
 Use the built-in Japanese booking confirmation templates standalone:

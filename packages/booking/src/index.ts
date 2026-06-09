@@ -106,6 +106,7 @@ export class BookingSDK {
       roomId: this.config.beds24.roomId,
       emailSender: this.email,
       property: this.config.property,
+      onBookingCreated: this.config.onBookingCreated,
     });
   }
 

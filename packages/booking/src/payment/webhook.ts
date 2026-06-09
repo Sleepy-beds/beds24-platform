@@ -2,7 +2,7 @@ import type Stripe from "stripe";
 import type { Beds24Client } from "@sleepy-beds/beds24-sdk";
 import type { EmailSender } from "../email/sender";
 import { generateBookingConfirmationEmail, generateOwnerNotificationEmail } from "../email/templates";
-import type { PropertyConfig, WebhookResult } from "../types";
+import type { BookingNotification, PropertyConfig, WebhookResult } from "../types";
 
 export interface WebhookHandlerConfig {
   stripe: Stripe;
@@ -11,6 +11,7 @@ export interface WebhookHandlerConfig {
   roomId: number;
   emailSender: EmailSender;
   property: PropertyConfig;
+  onBookingCreated?: (booking: BookingNotification) => Promise<void> | void;
 }
 
 // Simple in-memory idempotency guard
@@ -57,6 +58,7 @@ export async function handleWebhook(
 
   const bookingId = `BK-${session.id.slice(-8)}`;
   const results: WebhookResult["results"] = {};
+  let beds24BookingId: number | undefined;
 
   // --- 1. Create Beds24 booking ---
   try {
@@ -85,7 +87,8 @@ export async function handleWebhook(
           .join("\n") || undefined,
     });
 
-    results.beds24 = `OK (id: ${result.new?.[0] ?? "unknown"})`;
+    beds24BookingId = result.new?.[0];
+    results.beds24 = `OK (id: ${beds24BookingId ?? "unknown"})`;
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     return { received: false, bookingId, error: `Beds24 booking failed: ${message}` };
@@ -124,6 +127,28 @@ export async function handleWebhook(
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     results.email = `FAILED: ${message}`;
+  }
+
+  // --- 3. Fire optional notification hook (best-effort; never fails the booking) ---
+  if (config.onBookingCreated) {
+    try {
+      await config.onBookingCreated({
+        bookingId,
+        beds24BookingId,
+        guestName: metadata.guestName,
+        checkIn: metadata.checkIn,
+        checkOut: metadata.checkOut,
+        guests: Number(metadata.guests) || 1,
+        totalPrice: session.amount_total ?? 0,
+        nights: Number(metadata.nights) || 1,
+        guestEmail: metadata.guestEmail,
+        guestPhone: metadata.guestPhone,
+      });
+      results.notification = "OK";
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      results.notification = `FAILED: ${message}`;
+    }
   }
 
   markEventProcessed(event.id);
