@@ -1,0 +1,48 @@
+---
+title: "Error handling"
+description: "Every failure is a Beds24Error with a stable code."
+---
+
+All `beds24-sdk` methods throw a `Beds24Error` on failure. Switch on `.code` rather than
+matching message strings.
+
+```ts
+import { Beds24Client, Beds24Error, isBeds24Error } from "@sleepy-beds/beds24-sdk";
+
+try {
+  await client.getBookings();
+} catch (err) {
+  if (isBeds24Error(err)) {
+    switch (err.code) {
+      case "AUTH_ERROR":
+        // invalid/expired refresh token
+        break;
+      case "RATE_LIMIT":
+        // 429 — back off and retry
+        break;
+      default:
+        console.error(err.code, err.status, err.body);
+    }
+  }
+}
+```
+
+## Codes
+
+| Code | When |
+| ---- | ---- |
+| `AUTH_ERROR` | Missing credentials, failed refresh, or `401`/`403`. |
+| `RATE_LIMIT` | `429 Too Many Requests`. |
+| `NOT_FOUND` | `404`. |
+| `VALIDATION_ERROR` | `400`/`422`, or Beds24 rejected a booking (`success:false`). |
+| `API_ERROR` | Any other non-2xx response. |
+| `PARSE_ERROR` | Response body was not valid JSON. |
+| `NETWORK_ERROR` | `fetch` itself threw (offline, DNS, TLS, timeout). |
+
+Each error also carries `.status` (HTTP status, when applicable) and `.body` (the raw
+response) for debugging.
+
+## In Next.js
+
+[`beds24-nextjs`](/packages/beds24-nextjs) maps these codes to HTTP statuses automatically,
+so your route handlers don't need their own try/catch.

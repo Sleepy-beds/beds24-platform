@@ -15,7 +15,8 @@ payments, email, LINE, and framework integrations are layered on top of it — n
 | [`beds24-line`](packages/beds24-line) | `packages/beds24-line` | ✅ | LINE notifications for booking events (new booking / cancellation / check-in reminder). |
 | [`beds24-nextjs`](packages/beds24-nextjs) | `packages/beds24-nextjs` | ✅ | Next.js App Router route handlers (availability / calendar / checkout / webhook). |
 | `beds24-wordpress` | _planned_ | ⬜ | WordPress plugin. |
-| `examples/*` | _planned_ | ⬜ | Runnable Next.js / React / LINE bot examples. |
+| [`examples/*`](examples) | `examples/` | ✅ | Runnable examples (LINE check-in reminder). |
+| [`docs`](docs) | `docs/` | ✅ | Mintlify documentation site. |
 
 ## Roadmap
 
@@ -24,8 +25,8 @@ payments, email, LINE, and framework integrations are layered on top of it — n
 - [x] Unit tests + CI (GitHub Actions, Node 18/20/22)
 - [x] `beds24-line` — LINE notifications for booking events _(the differentiator)_
 - [x] `beds24-nextjs` — App Router route handlers
-- [ ] Docs site (Mintlify)
-- [ ] Examples (Next.js / React / LINE bot)
+- [x] Docs site (Mintlify scaffold in `docs/`)
+- [x] Examples (`examples/line-checkin-reminder`)
 - [ ] `beds24-wordpress` plugin
 
 ## Development

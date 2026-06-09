@@ -1,0 +1,61 @@
+---
+title: "LINE notifications"
+description: "Notify your LINE group on new bookings and before check-in."
+---
+
+There are two common patterns for delivering LINE notifications.
+
+## 1. On a paid booking (real-time)
+
+Wire `onBookingCreated` into the booking SDK's Stripe webhook. It fires after the Beds24
+booking is created, is best-effort (errors are reported, never failing the booking), and
+keeps the booking package decoupled from any specific notifier.
+
+```ts
+import { BookingSDK } from "@sleepy-beds/beds24-booking-sdk";
+import { Beds24LineNotifier } from "@sleepy-beds/beds24-line";
+
+const line = new Beds24LineNotifier({
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN!,
+  to: process.env.LINE_GROUP_ID,
+});
+
+const sdk = new BookingSDK({
+  /* … */
+  onBookingCreated: (b) =>
+    line.notifyBookingCreated({
+      guestName: b.guestName,
+      checkIn: b.checkIn,
+      checkOut: b.checkOut,
+      guests: b.guests,
+      totalPrice: b.totalPrice,
+      phone: b.guestPhone,
+    }),
+});
+```
+
+## 2. Daily check-in reminder (cron)
+
+Pull tomorrow's arrivals and remind your group. This needs only `beds24-sdk` +
+`beds24-line` — no Stripe.
+
+```ts
+import { Beds24Client } from "@sleepy-beds/beds24-sdk";
+import { Beds24LineNotifier, fromBeds24Booking } from "@sleepy-beds/beds24-line";
+
+const client = new Beds24Client({ refreshToken: process.env.BEDS24_REFRESH_TOKEN });
+const line = new Beds24LineNotifier({
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN!,
+  to: process.env.LINE_GROUP_ID,
+});
+
+const tomorrow = "2026-06-12";
+const arrivals = await client.getBookings({ arrivalFrom: tomorrow, arrivalTo: tomorrow });
+for (const b of arrivals) {
+  await line.notifyCheckinReminder(fromBeds24Booking(b, { propertyName: "古民家のらり" }));
+}
+```
+
+<Card title="Runnable example" icon="github" href="https://github.com/Sleepy-beds/beds24-platform/tree/main/examples/line-checkin-reminder">
+  examples/line-checkin-reminder
+</Card>

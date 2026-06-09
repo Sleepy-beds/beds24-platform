@@ -1,0 +1,40 @@
+---
+title: "Authentication"
+description: "How the SDK authenticates with Beds24."
+---
+
+Beds24 API v2 uses short-lived **access tokens** obtained from a long-lived **refresh
+token**. The SDK handles this for you.
+
+## Get a refresh token
+
+1. In Beds24, go to **Settings → Apis → Token**.
+2. Create a token with the scopes your app needs (read bookings, write bookings, …).
+3. Store it as `BEDS24_REFRESH_TOKEN` — never commit it.
+
+## Use it
+
+```ts
+import { Beds24Client } from "@sleepy-beds/beds24-sdk";
+
+const client = new Beds24Client({
+  refreshToken: process.env.BEDS24_REFRESH_TOKEN,
+});
+```
+
+The client:
+
+- fetches an access token on first use and **caches it** until ~5 minutes before expiry,
+- transparently **refreshes after a `401`** and retries the request once,
+- throws a [`Beds24Error`](/guides/error-handling) with code `AUTH_ERROR` if the refresh
+  token is missing or invalid.
+
+## Passing an access token directly
+
+If you already have an access token (e.g. from another service), pass it directly. It's used
+until it expires, then the client falls back to the refresh token if one was provided.
+
+```ts
+new Beds24Client({ accessToken: "..." });
+new Beds24Client({ refreshToken: "...", accessToken: "..." });
+```

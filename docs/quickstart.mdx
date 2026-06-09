@@ -1,0 +1,66 @@
+---
+title: "Quickstart"
+description: "Read availability and bookings from Beds24 in a few lines."
+---
+
+## Install
+
+```bash
+npm install @sleepy-beds/beds24-sdk
+```
+
+## Create a client
+
+```ts
+import { Beds24Client } from "@sleepy-beds/beds24-sdk";
+
+const client = new Beds24Client({
+  refreshToken: process.env.BEDS24_REFRESH_TOKEN,
+});
+```
+
+<Note>
+  Create a refresh token in **Beds24 → Settings → Apis → Token**. See
+  [Authentication](/authentication) for details.
+</Note>
+
+## Read bookings & availability
+
+```ts
+// Upcoming arrivals
+const bookings = await client.getBookings({ arrivalFrom: "2026-06-01" });
+
+// Is a stay bookable?
+const offers = await client.getOffers({
+  arrival: "2026-06-12",
+  departure: "2026-06-14",
+  numAdults: 2,
+});
+```
+
+## Create, modify, cancel
+
+```ts
+const res = await client.createBooking({
+  roomId: 12345,
+  arrival: "2026-06-12",
+  departure: "2026-06-14",
+  numAdult: 2,
+  firstName: "John",
+  lastName: "Smith",
+  email: "john@example.com",
+  phone: "+81-90-0000-0000",
+  status: "confirmed",
+});
+
+const id = res.new![0];
+await client.modifyBooking(id, { numAdult: 3 });
+await client.cancelBooking(id);
+```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Send LINE notifications" icon="comment" href="/packages/beds24-line" />
+  <Card title="Add Next.js endpoints" icon="bolt" href="/packages/beds24-nextjs" />
+</CardGroup>

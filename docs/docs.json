@@ -1,0 +1,45 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Sleepy-beds",
+  "colors": {
+    "primary": "#5B6CF0",
+    "light": "#8B97F5",
+    "dark": "#3B49C0"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Getting started",
+        "pages": ["introduction", "quickstart", "authentication"]
+      },
+      {
+        "group": "Packages",
+        "pages": [
+          "packages/beds24-sdk",
+          "packages/beds24-line",
+          "packages/beds24-nextjs",
+          "packages/beds24-booking-sdk"
+        ]
+      },
+      {
+        "group": "Guides",
+        "pages": ["guides/error-handling", "guides/line-notifications"]
+      }
+    ]
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "GitHub",
+        "href": "https://github.com/Sleepy-beds/beds24-platform"
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/Sleepy-beds"
+    }
+  }
+}

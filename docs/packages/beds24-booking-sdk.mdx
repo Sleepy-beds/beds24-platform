@@ -1,0 +1,46 @@
+---
+title: "beds24-booking-sdk"
+description: "All-in-one booking flow: Beds24 + Stripe + Resend."
+---
+
+```bash
+npm install @sleepy-beds/beds24-booking-sdk stripe resend
+```
+
+A higher-level SDK that ties together availability, pricing, Stripe checkout, Beds24 booking
+creation, and confirmation emails — built on [`beds24-sdk`](/packages/beds24-sdk).
+
+## Setup
+
+```ts
+import { BookingSDK } from "@sleepy-beds/beds24-booking-sdk";
+
+const sdk = new BookingSDK({
+  beds24: { refreshToken: process.env.BEDS24_REFRESH_TOKEN!, roomId: 12345 },
+  stripe: { secretKey: process.env.STRIPE_SECRET_KEY!, webhookSecret: process.env.STRIPE_WEBHOOK_SECRET! },
+  email: { resendApiKey: process.env.RESEND_API_KEY!, from: "...", owner: "..." },
+  property: { /* name, prices, check-in times, … */ },
+  baseUrl: "https://example.com",
+});
+```
+
+## Flow
+
+1. `sdk.getCalendar(start, end)` / `sdk.checkAvailability(...)` — show availability.
+2. `sdk.createCheckout(request)` — create a Stripe Checkout session.
+3. `sdk.handlePaymentWebhook(rawBody, signature)` — on payment, create the Beds24 booking
+   and send confirmation emails in one call.
+
+## Notify on booking
+
+Wire a LINE push (or anything) with the `onBookingCreated` hook — best-effort, never fails
+the booking:
+
+```ts
+const sdk = new BookingSDK({
+  /* … */
+  onBookingCreated: (b) => line.notifyBookingCreated(b),
+});
+```
+
+See the [LINE notifications guide](/guides/line-notifications).
