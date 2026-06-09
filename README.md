@@ -39,15 +39,15 @@ pnpm -r test
 
 `pnpm ci` runs typecheck + build + test across the workspace.
 
-## ⚠️ npm publish name
+## Publishing
 
-The unscoped name `beds24-sdk` is already taken on npm by an unrelated 0.0.0 placeholder, so
-the core **cannot be published as `beds24-sdk`**. Before the first publish, pick a scope
-(e.g. `@your-scope/beds24-sdk`) and update `packages/beds24-sdk/package.json` `name` plus the
-`beds24-sdk` dependency in `packages/booking/package.json`. The internal workspace name can
-stay `beds24-sdk` for local development regardless.
+All packages publish under the **`@sleepy-beds`** npm scope
+(`@sleepy-beds/beds24-sdk`, `@sleepy-beds/beds24-booking-sdk`, `@sleepy-beds/beds24-line`).
+See **[PUBLISHING.md](PUBLISHING.md)** for the one-time npm-org setup and the
+manual / CI release steps.
 
-`beds24-booking-sdk` is already owned/published and is unaffected.
+> The unscoped name `beds24-sdk` is taken on npm by an unrelated placeholder, which is why
+> the scope is used.
 
 ## License
 

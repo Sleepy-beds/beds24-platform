@@ -1,6 +1,9 @@
 {
-  "name": "beds24-sdk",
+  "name": "@sleepy-beds/beds24-sdk",
   "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Typed, dependency-free Beds24 API v2 client for JavaScript and TypeScript. Properties, calendar, availability, bookings, with structured error handling.",
   "license": "MIT",
   "author": "Wataru Shirako (https://github.com/WataruShirako)",

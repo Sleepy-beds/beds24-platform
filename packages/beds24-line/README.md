@@ -13,13 +13,13 @@ who want a booking ping in their LINE group.
 ## Install
 
 ```bash
-npm install beds24-line
+npm install @sleepy-beds/beds24-line
 ```
 
 ## Quick start
 
 ```ts
-import { Beds24LineNotifier } from "beds24-line";
+import { Beds24LineNotifier } from "@sleepy-beds/beds24-line";
 
 const line = new Beds24LineNotifier({
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN!,
@@ -66,8 +66,8 @@ Produces a LINE message like:
 Pair with `beds24-sdk` to notify directly from live bookings:
 
 ```ts
-import { Beds24Client } from "beds24-sdk";
-import { Beds24LineNotifier, fromBeds24Booking } from "beds24-line";
+import { Beds24Client } from "@sleepy-beds/beds24-sdk";
+import { Beds24LineNotifier, fromBeds24Booking } from "@sleepy-beds/beds24-line";
 
 const client = new Beds24Client({ refreshToken: process.env.BEDS24_REFRESH_TOKEN });
 const line = new Beds24LineNotifier({

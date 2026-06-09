@@ -4,7 +4,7 @@
 // Beds24 のAPI型は beds24-sdk（純粋コア）から再エクスポートする
 // ============================================================
 
-import type { Beds24ClientConfig } from "beds24-sdk";
+import type { Beds24ClientConfig } from "@sleepy-beds/beds24-sdk";
 
 // Re-export the core Beds24 API types so consumers of this package can keep
 // importing them from one place.
@@ -17,8 +17,8 @@ export type {
   Beds24BookingRequest,
   Beds24BookingResponse,
   Beds24Booking,
-} from "beds24-sdk";
-export { Beds24Error, isBeds24Error } from "beds24-sdk";
+} from "@sleepy-beds/beds24-sdk";
+export { Beds24Error, isBeds24Error } from "@sleepy-beds/beds24-sdk";
 
 // --- SDK Configuration ---
 

@@ -1,6 +1,9 @@
 {
-  "name": "beds24-line",
+  "name": "@sleepy-beds/beds24-line",
   "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "LINE notifications for Beds24 booking events (new booking, cancellation, check-in reminder) via the LINE Messaging API. Built on beds24-sdk.",
   "license": "MIT",
   "author": "Wataru Shirako (https://github.com/WataruShirako)",
@@ -49,7 +52,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "beds24-sdk": "workspace:*"
+    "@sleepy-beds/beds24-sdk": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.5.0",

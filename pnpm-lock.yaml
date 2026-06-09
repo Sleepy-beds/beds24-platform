@@ -10,7 +10,7 @@ importers:
 
   packages/beds24-line:
     dependencies:
-      beds24-sdk:
+      '@sleepy-beds/beds24-sdk':
         specifier: workspace:*
         version: link:../beds24-sdk
     devDependencies:
@@ -32,7 +32,7 @@ importers:
 
   packages/booking:
     dependencies:
-      beds24-sdk:
+      '@sleepy-beds/beds24-sdk':
         specifier: workspace:*
         version: link:../beds24-sdk
     devDependencies:

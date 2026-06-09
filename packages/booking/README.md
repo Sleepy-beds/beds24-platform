@@ -1,4 +1,4 @@
-# beds24-booking-sdk
+# @sleepy-beds/beds24-booking-sdk
 
 All-in-one booking SDK integrating [Beds24](https://beds24.com/) (PMS), [Stripe](https://stripe.com/) (payments), and [Resend](https://resend.com/) (email).
 
@@ -9,7 +9,7 @@ Handles availability checks, pricing, Stripe Checkout, Beds24 booking creation, 
 ## Installation
 
 ```bash
-npm install beds24-booking-sdk stripe resend
+npm install @sleepy-beds/beds24-booking-sdk stripe resend
 ```
 
 `stripe` and `resend` are peer dependencies. `resend` is optional if you don't need email notifications.
@@ -17,7 +17,7 @@ npm install beds24-booking-sdk stripe resend
 ## Setup
 
 ```typescript
-import { BookingSDK } from "beds24-booking-sdk";
+import { BookingSDK } from "@sleepy-beds/beds24-booking-sdk";
 
 const sdk = new BookingSDK({
   beds24: {
@@ -80,7 +80,7 @@ const verified = sdk.verifyPriceFromCache("2026-05-01", "2026-05-03", 4);
 ### Stripe Checkout
 
 ```typescript
-import { isCheckoutError } from "beds24-booking-sdk";
+import { isCheckoutError } from "@sleepy-beds/beds24-booking-sdk";
 
 const result = await sdk.createCheckout({
   checkIn: "2026-05-01",
@@ -129,7 +129,7 @@ Use the built-in Japanese booking confirmation templates standalone:
 import {
   generateBookingConfirmationEmail,
   generateOwnerNotificationEmail,
-} from "beds24-booking-sdk/email";
+} from "@sleepy-beds/beds24-booking-sdk/email";
 
 const guestEmail = generateBookingConfirmationEmail(bookingData, propertyConfig);
 const ownerEmail = generateOwnerNotificationEmail(bookingData, propertyConfig);
@@ -140,10 +140,10 @@ const ownerEmail = generateOwnerNotificationEmail(bookingData, propertyConfig);
 Import only what you need:
 
 ```typescript
-import { Beds24Client } from "beds24-booking-sdk/beds24";
-import { PriceCache, calculateTotalPrice } from "beds24-booking-sdk/pricing";
-import { EmailSender } from "beds24-booking-sdk/email";
-import { validateCheckoutRequest } from "beds24-booking-sdk/payment";
+import { Beds24Client } from "@sleepy-beds/beds24-sdk";
+import { PriceCache, calculateTotalPrice } from "@sleepy-beds/beds24-booking-sdk/pricing";
+import { EmailSender } from "@sleepy-beds/beds24-booking-sdk/email";
+import { validateCheckoutRequest } from "@sleepy-beds/beds24-booking-sdk/payment";
 ```
 
 ## Requirements

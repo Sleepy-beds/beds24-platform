@@ -1,6 +1,9 @@
 {
-  "name": "beds24-booking-sdk",
+  "name": "@sleepy-beds/beds24-booking-sdk",
   "version": "0.3.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "All-in-one booking SDK integrating Beds24 (PMS), Stripe (payments), and Resend (email). Handles availability, pricing, checkout, booking creation, and notifications. Built on the beds24-sdk core.",
   "license": "MIT",
   "author": "Wataru Shirako (https://github.com/WataruShirako)",
@@ -62,7 +65,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "beds24-sdk": "workspace:*"
+    "@sleepy-beds/beds24-sdk": "workspace:*"
   },
   "peerDependencies": {
     "stripe": ">=15.0.0",

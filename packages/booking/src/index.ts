@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { Beds24Client } from "beds24-sdk";
+import { Beds24Client } from "@sleepy-beds/beds24-sdk";
 import { EmailSender } from "./email/sender";
 import { generateBookingConfirmationEmail, generateOwnerNotificationEmail } from "./email/templates";
 import { createCheckoutSession, isCheckoutError } from "./payment/checkout";
@@ -121,7 +121,7 @@ export class BookingSDK {
 }
 
 // Re-export everything
-export { Beds24Client } from "beds24-sdk";
+export { Beds24Client } from "@sleepy-beds/beds24-sdk";
 export { EmailSender } from "./email/sender";
 export { generateBookingConfirmationEmail, generateOwnerNotificationEmail } from "./email/templates";
 export { createCheckoutSession, isCheckoutError } from "./payment/checkout";

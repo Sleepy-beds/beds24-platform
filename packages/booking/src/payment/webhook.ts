@@ -1,5 +1,5 @@
 import type Stripe from "stripe";
-import type { Beds24Client } from "beds24-sdk";
+import type { Beds24Client } from "@sleepy-beds/beds24-sdk";
 import type { EmailSender } from "../email/sender";
 import { generateBookingConfirmationEmail, generateOwnerNotificationEmail } from "../email/templates";
 import type { PropertyConfig, WebhookResult } from "../types";

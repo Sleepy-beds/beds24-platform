@@ -18,16 +18,13 @@ email, LINE, and framework integrations are built _on top_ of this package, neve
 ## Install
 
 ```bash
-npm install beds24-sdk
+npm install @sleepy-beds/beds24-sdk
 ```
-
-> **Note:** the package name on the npm registry may be scoped (see the repo root README) —
-> check the badge there for the exact install name.
 
 ## Quick start
 
 ```ts
-import { Beds24Client } from "beds24-sdk";
+import { Beds24Client } from "@sleepy-beds/beds24-sdk";
 
 const client = new Beds24Client({
   refreshToken: process.env.BEDS24_REFRESH_TOKEN,
@@ -74,7 +71,7 @@ new Beds24Client({ refreshToken: "...", accessToken: "..." });
 ## Error handling
 
 ```ts
-import { Beds24Client, Beds24Error, isBeds24Error } from "beds24-sdk";
+import { Beds24Client, Beds24Error, isBeds24Error } from "@sleepy-beds/beds24-sdk";
 
 try {
   await client.getBookings();
@@ -115,7 +112,10 @@ try {
 | `getOffers(arrival, departure, numAdults, propertyId?)` / `getOffers(params)` | Bookable offers for a stay. |
 | `getBookings(filters?)` | Bookings as a flat array. |
 | `getBookingsPage(filters?)` | Bookings with pagination metadata. |
+| `getBooking(id)` | A single booking, or `null`. |
 | `createBooking(request)` | Create a booking; throws on `success:false`. |
+| `modifyBooking(id, changes)` | Update selected fields of a booking. |
+| `cancelBooking(id)` | Cancel a booking (status → `cancelled`). |
 
 ## License
 
