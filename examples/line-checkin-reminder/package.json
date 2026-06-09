@@ -1,0 +1,17 @@
+{
+  "name": "@sleepy-beds/example-line-checkin-reminder",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Example: daily LINE check-in reminder for tomorrow's Beds24 arrivals.",
+  "scripts": {
+    "start": "tsx src/reminder.ts"
+  },
+  "dependencies": {
+    "@sleepy-beds/beds24-line": "workspace:*",
+    "@sleepy-beds/beds24-sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0"
+  }
+}
