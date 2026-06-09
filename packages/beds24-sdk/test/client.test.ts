@@ -193,6 +193,45 @@ describe("createBooking", () => {
   });
 });
 
+describe("getBooking / modifyBooking / cancelBooking", () => {
+  it("getBooking filters by id and returns the first match", async () => {
+    const f = mockFetch({ queue: [json({ success: true, data: [{ id: 42, status: "confirmed" }] })] });
+    const booking = await makeClient(f as unknown as typeof fetch).getBooking(42);
+    expect(booking).toMatchObject({ id: 42 });
+    const call = f.calls.find((c) => c.url.includes("/bookings"));
+    expect(call?.url).toContain("id=42");
+  });
+
+  it("getBooking returns null when nothing matches", async () => {
+    const f = mockFetch({ queue: [json({ success: true, data: [] })] });
+    const booking = await makeClient(f as unknown as typeof fetch).getBooking(999);
+    expect(booking).toBeNull();
+  });
+
+  it("modifyBooking POSTs the id with the changed fields", async () => {
+    const f = mockFetch({ queue: [json({ success: true, modified: [42] })] });
+    const res = await makeClient(f as unknown as typeof fetch).modifyBooking(42, { price: 19800 });
+    expect(res.modified).toEqual([42]);
+    const call = f.calls.find((c) => c.url.endsWith("/bookings") && c.init?.method === "POST");
+    const body = JSON.parse(String(call?.init?.body));
+    expect(body).toEqual([{ id: 42, price: 19800 }]);
+  });
+
+  it("cancelBooking sets status to cancelled", async () => {
+    const f = mockFetch({ queue: [json({ success: true, modified: [42] })] });
+    await makeClient(f as unknown as typeof fetch).cancelBooking(42);
+    const call = f.calls.find((c) => c.url.endsWith("/bookings") && c.init?.method === "POST");
+    expect(JSON.parse(String(call?.init?.body))).toEqual([{ id: 42, status: "cancelled" }]);
+  });
+
+  it("modifyBooking throws VALIDATION_ERROR on success:false", async () => {
+    const f = mockFetch({ queue: [json({ success: false, errors: ["not found"] })] });
+    await expect(
+      makeClient(f as unknown as typeof fetch).cancelBooking(7),
+    ).rejects.toMatchObject({ code: "VALIDATION_ERROR" });
+  });
+});
+
 describe("error mapping", () => {
   it.each([
     [404, "NOT_FOUND"],

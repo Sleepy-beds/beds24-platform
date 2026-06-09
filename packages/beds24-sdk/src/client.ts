@@ -279,10 +279,36 @@ export class Beds24Client {
     return { ...json, data: json.data ?? [] };
   }
 
+  /** Fetch a single booking by id. Returns `null` if it does not exist. */
+  async getBooking(id: number): Promise<Beds24Booking | null> {
+    const { data } = await this.getBookingsPage({ id });
+    return data[0] ?? null;
+  }
+
   async createBooking(booking: Beds24BookingRequest): Promise<Beds24BookingResponse> {
+    return this.postBooking(booking);
+  }
+
+  /** Modify an existing booking. Pass only the fields you want to change. */
+  async modifyBooking(
+    id: number,
+    changes: Partial<Beds24BookingRequest>,
+  ): Promise<Beds24BookingResponse> {
+    return this.postBooking({ id, ...changes });
+  }
+
+  /** Cancel a booking (sets its status to `cancelled`). */
+  async cancelBooking(id: number): Promise<Beds24BookingResponse> {
+    return this.modifyBooking(id, { status: "cancelled" });
+  }
+
+  /** Shared `POST /bookings` for create and modify; throws on `success:false`. */
+  private async postBooking(
+    payload: Beds24BookingRequest | (Partial<Beds24BookingRequest> & { id: number }),
+  ): Promise<Beds24BookingResponse> {
     const data = await this.request<Beds24BookingResponse | Beds24BookingResponse[]>("/bookings", {
       method: "POST",
-      body: JSON.stringify([booking]),
+      body: JSON.stringify([payload]),
     });
     const result = Array.isArray(data) ? data[0] : data;
     if (result && result.success === false) {
