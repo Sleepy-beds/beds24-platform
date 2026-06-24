@@ -4,7 +4,7 @@ description: "Next.js App Router route handlers for the booking SDK."
 ---
 
 ```bash
-npm install @sleepy-beds/beds24-nextjs @sleepy-beds/beds24-booking-sdk
+npm install @sleepy-beds/nextjs @sleepy-beds/booking
 ```
 
 Mount availability, calendar, checkout, and Stripe-webhook endpoints in a few lines. The
@@ -15,13 +15,13 @@ Hono.
 
 ```ts
 // lib/booking.ts
-import { BookingSDK } from "@sleepy-beds/beds24-booking-sdk";
+import { BookingSDK } from "@sleepy-beds/booking";
 export const sdk = new BookingSDK({ /* … */ });
 ```
 
 ```ts
 // app/api/beds24/checkout/route.ts
-import { checkoutHandler } from "@sleepy-beds/beds24-nextjs";
+import { checkoutHandler } from "@sleepy-beds/nextjs";
 import { sdk } from "@/lib/booking";
 
 export const POST = checkoutHandler(sdk);
@@ -29,7 +29,7 @@ export const POST = checkoutHandler(sdk);
 
 ```ts
 // app/api/beds24/webhook/route.ts
-import { webhookHandler } from "@sleepy-beds/beds24-nextjs";
+import { webhookHandler } from "@sleepy-beds/nextjs";
 import { sdk } from "@/lib/booking";
 
 export const POST = webhookHandler(sdk);

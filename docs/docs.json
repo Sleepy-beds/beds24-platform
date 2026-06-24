@@ -17,10 +17,10 @@
       {
         "group": "Packages",
         "pages": [
-          "packages/beds24-sdk",
-          "packages/beds24-line",
-          "packages/beds24-nextjs",
-          "packages/beds24-booking-sdk"
+          "packages/sdk",
+          "packages/line",
+          "packages/nextjs",
+          "packages/booking"
         ]
       },
       {

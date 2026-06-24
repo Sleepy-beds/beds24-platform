@@ -3,7 +3,7 @@ import type {
   CheckoutRequest,
   CheckoutResult,
   WebhookResult,
-} from "@sleepy-beds/beds24-booking-sdk";
+} from "@sleepy-beds/booking";
 
 /**
  * The subset of `BookingSDK` these handlers use. `BookingSDK` satisfies it

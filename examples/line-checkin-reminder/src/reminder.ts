@@ -6,8 +6,8 @@
  *
  *   npx tsx src/reminder.ts
  */
-import { Beds24Client } from "@sleepy-beds/beds24-sdk";
-import { Beds24LineNotifier, fromBeds24Booking } from "@sleepy-beds/beds24-line";
+import { Beds24Client } from "@sleepy-beds/sdk";
+import { Beds24LineNotifier, fromBeds24Booking } from "@sleepy-beds/line";
 
 function requireEnv(name: string): string {
   const v = process.env[name];

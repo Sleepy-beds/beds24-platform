@@ -8,8 +8,8 @@
     "start": "tsx src/reminder.ts"
   },
   "dependencies": {
-    "@sleepy-beds/beds24-line": "workspace:*",
-    "@sleepy-beds/beds24-sdk": "workspace:*"
+    "@sleepy-beds/line": "workspace:*",
+    "@sleepy-beds/sdk": "workspace:*"
   },
   "devDependencies": {
     "tsx": "^4.19.0"

@@ -18,13 +18,13 @@ email, LINE, and framework integrations are built _on top_ of this package, neve
 ## Install
 
 ```bash
-npm install @sleepy-beds/beds24-sdk
+npm install @sleepy-beds/sdk
 ```
 
 ## Quick start
 
 ```ts
-import { Beds24Client } from "@sleepy-beds/beds24-sdk";
+import { Beds24Client } from "@sleepy-beds/sdk";
 
 const client = new Beds24Client({
   refreshToken: process.env.BEDS24_REFRESH_TOKEN,
@@ -71,7 +71,7 @@ new Beds24Client({ refreshToken: "...", accessToken: "..." });
 ## Error handling
 
 ```ts
-import { Beds24Client, Beds24Error, isBeds24Error } from "@sleepy-beds/beds24-sdk";
+import { Beds24Client, Beds24Error, isBeds24Error } from "@sleepy-beds/sdk";
 
 try {
   await client.getBookings();

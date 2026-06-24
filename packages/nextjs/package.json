@@ -1,5 +1,5 @@
 {
-  "name": "@sleepy-beds/beds24-nextjs",
+  "name": "@sleepy-beds/nextjs",
   "version": "0.1.0",
   "publishConfig": {
     "access": "public"
@@ -9,12 +9,12 @@
   "author": "Wataru Shirako (https://github.com/WataruShirako)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/WataruShirako/beds24-booking-sdk.git",
-    "directory": "packages/beds24-nextjs"
+    "url": "https://github.com/Sleepy-beds/beds24-platform.git",
+    "directory": "packages/nextjs"
   },
-  "homepage": "https://github.com/WataruShirako/beds24-booking-sdk/tree/main/packages/beds24-nextjs#readme",
+  "homepage": "https://github.com/Sleepy-beds/beds24-platform/tree/main/packages/nextjs#readme",
   "bugs": {
-    "url": "https://github.com/WataruShirako/beds24-booking-sdk/issues"
+    "url": "https://github.com/Sleepy-beds/beds24-platform/issues"
   },
   "keywords": [
     "beds24",
@@ -52,10 +52,10 @@
     "node": ">=18"
   },
   "peerDependencies": {
-    "@sleepy-beds/beds24-booking-sdk": "workspace:^"
+    "@sleepy-beds/booking": "workspace:^"
   },
   "devDependencies": {
-    "@sleepy-beds/beds24-booking-sdk": "workspace:*",
+    "@sleepy-beds/booking": "workspace:*",
     "typescript": "^5.5.0",
     "vitest": "^2.1.9"
   }

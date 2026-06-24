@@ -1,5 +1,5 @@
 // ============================================================
-// beds24-line — Type Definitions
+// @sleepy-beds/line — Type Definitions
 // LINE Messaging API push notifications for Beds24 booking events.
 // (LINE Notify was discontinued in March 2025 — this uses the Messaging API.)
 // ============================================================

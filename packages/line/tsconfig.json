@@ -3,8 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@sleepy-beds/beds24-booking-sdk": ["../booking/src/index.ts"],
-      "@sleepy-beds/beds24-sdk": ["../beds24-sdk/src/index.ts"]
+      "@sleepy-beds/sdk": ["../sdk/src/index.ts"]
     }
   },
   "include": ["src/**/*.ts", "test/**/*.ts"]

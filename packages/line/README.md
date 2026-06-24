@@ -4,7 +4,7 @@ LINE notifications for [Beds24](https://beds24.com) booking events — new booki
 cancellations, and check-in reminders — delivered to a LINE user, group, or room.
 
 Part of the [Beds24 developer platform](../../README.md), built on
-[`beds24-sdk`](../beds24-sdk). Aimed at small inns, guesthouses, and minpaku in Japan
+[`beds24-sdk`](../sdk). Aimed at small inns, guesthouses, and minpaku in Japan
 who want a booking ping in their LINE group.
 
 > **Uses the LINE Messaging API**, not the discontinued LINE Notify (which shut down in
@@ -13,13 +13,13 @@ who want a booking ping in their LINE group.
 ## Install
 
 ```bash
-npm install @sleepy-beds/beds24-line
+npm install @sleepy-beds/line
 ```
 
 ## Quick start
 
 ```ts
-import { Beds24LineNotifier } from "@sleepy-beds/beds24-line";
+import { Beds24LineNotifier } from "@sleepy-beds/line";
 
 const line = new Beds24LineNotifier({
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN!,
@@ -66,8 +66,8 @@ Produces a LINE message like:
 Pair with `beds24-sdk` to notify directly from live bookings:
 
 ```ts
-import { Beds24Client } from "@sleepy-beds/beds24-sdk";
-import { Beds24LineNotifier, fromBeds24Booking } from "@sleepy-beds/beds24-line";
+import { Beds24Client } from "@sleepy-beds/sdk";
+import { Beds24LineNotifier, fromBeds24Booking } from "@sleepy-beds/line";
 
 const client = new Beds24Client({ refreshToken: process.env.BEDS24_REFRESH_TOKEN });
 const line = new Beds24LineNotifier({

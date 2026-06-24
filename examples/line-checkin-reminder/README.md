@@ -2,8 +2,8 @@
 
 A daily job that pushes a LINE reminder for every guest arriving **tomorrow**.
 
-Uses [`@sleepy-beds/beds24-sdk`](../../packages/beds24-sdk) to read arrivals and
-[`@sleepy-beds/beds24-line`](../../packages/beds24-line) to notify.
+Uses [`@sleepy-beds/sdk`](../../packages/sdk) to read arrivals and
+[`@sleepy-beds/line`](../../packages/line) to notify.
 
 ## Run
 

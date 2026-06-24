@@ -13,15 +13,15 @@ importers:
       '@hono/node-server':
         specifier: ^1.13.7
         version: 1.19.14(hono@4.12.27)
-      '@sleepy-beds/beds24-booking-sdk':
+      '@sleepy-beds/booking':
         specifier: workspace:*
         version: link:../../packages/booking
-      '@sleepy-beds/beds24-line':
+      '@sleepy-beds/line':
         specifier: workspace:*
-        version: link:../../packages/beds24-line
-      '@sleepy-beds/beds24-sdk':
+        version: link:../../packages/line
+      '@sleepy-beds/sdk':
         specifier: workspace:*
-        version: link:../../packages/beds24-sdk
+        version: link:../../packages/sdk
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -83,22 +83,41 @@ importers:
 
   examples/line-checkin-reminder:
     dependencies:
-      '@sleepy-beds/beds24-line':
+      '@sleepy-beds/line':
         specifier: workspace:*
-        version: link:../../packages/beds24-line
-      '@sleepy-beds/beds24-sdk':
+        version: link:../../packages/line
+      '@sleepy-beds/sdk':
         specifier: workspace:*
-        version: link:../../packages/beds24-sdk
+        version: link:../../packages/sdk
     devDependencies:
       tsx:
         specifier: ^4.19.0
         version: 4.22.4
 
-  packages/beds24-line:
+  packages/booking:
     dependencies:
-      '@sleepy-beds/beds24-sdk':
+      '@sleepy-beds/sdk':
         specifier: workspace:*
-        version: link:../beds24-sdk
+        version: link:../sdk
+    devDependencies:
+      resend:
+        specifier: ^4.0.0
+        version: 4.8.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      stripe:
+        specifier: ^17.0.0
+        version: 17.7.0
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(@types/node@25.9.2)
+
+  packages/line:
+    dependencies:
+      '@sleepy-beds/sdk':
+        specifier: workspace:*
+        version: link:../sdk
     devDependencies:
       typescript:
         specifier: ^5.5.0
@@ -107,9 +126,9 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9(@types/node@25.9.2)
 
-  packages/beds24-nextjs:
+  packages/nextjs:
     devDependencies:
-      '@sleepy-beds/beds24-booking-sdk':
+      '@sleepy-beds/booking':
         specifier: workspace:*
         version: link:../booking
       typescript:
@@ -119,27 +138,8 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9(@types/node@25.9.2)
 
-  packages/beds24-sdk:
+  packages/sdk:
     devDependencies:
-      typescript:
-        specifier: ^5.5.0
-        version: 5.9.3
-      vitest:
-        specifier: ^2.1.9
-        version: 2.1.9(@types/node@25.9.2)
-
-  packages/booking:
-    dependencies:
-      '@sleepy-beds/beds24-sdk':
-        specifier: workspace:*
-        version: link:../beds24-sdk
-    devDependencies:
-      resend:
-        specifier: ^4.0.0
-        version: 4.8.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      stripe:
-        specifier: ^17.0.0
-        version: 17.7.0
       typescript:
         specifier: ^5.5.0
         version: 5.9.3

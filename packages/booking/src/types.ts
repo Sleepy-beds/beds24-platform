@@ -1,10 +1,10 @@
 // ============================================================
-// beds24-booking-sdk — Type Definitions
+// @sleepy-beds/booking — Type Definitions
 // Beds24 + Stripe + Resend を統合した宿泊予約SDK
-// Beds24 のAPI型は beds24-sdk（純粋コア）から再エクスポートする
+// Beds24 のAPI型は @sleepy-beds/sdk（純粋コア）から再エクスポートする
 // ============================================================
 
-import type { Beds24ClientConfig } from "@sleepy-beds/beds24-sdk";
+import type { Beds24ClientConfig } from "@sleepy-beds/sdk";
 
 // Re-export the core Beds24 API types so consumers of this package can keep
 // importing them from one place.
@@ -17,8 +17,8 @@ export type {
   Beds24BookingRequest,
   Beds24BookingResponse,
   Beds24Booking,
-} from "@sleepy-beds/beds24-sdk";
-export { Beds24Error, isBeds24Error } from "@sleepy-beds/beds24-sdk";
+} from "@sleepy-beds/sdk";
+export { Beds24Error, isBeds24Error } from "@sleepy-beds/sdk";
 
 // --- SDK Configuration ---
 
@@ -70,12 +70,12 @@ export interface BookingSDKConfig {
    * checkout (inside the Stripe webhook). Use it to send a LINE notification,
    * push to Slack, etc. Errors are caught and reported in the webhook result —
    * they never fail the booking. Decoupled from any specific notifier so you
-   * can wire in `@sleepy-beds/beds24-line` (or anything) yourself.
+   * can wire in `@sleepy-beds/line` (or anything) yourself.
    */
   onBookingCreated?: (booking: BookingNotification) => Promise<void> | void;
 }
 
-// (Beds24 API entity types are re-exported from beds24-sdk above.)
+// (Beds24 API entity types are re-exported from @sleepy-beds/sdk above.)
 
 // --- Booking / Checkout Types ---
 
@@ -113,7 +113,7 @@ export interface WebhookResult {
 
 /**
  * Payload passed to {@link BookingSDKConfig.onBookingCreated}. Its shape maps
- * directly onto `@sleepy-beds/beds24-line`'s `BookingSummary`.
+ * directly onto `@sleepy-beds/line`'s `BookingSummary`.
  */
 export interface BookingNotification {
   /** Local booking reference, e.g. `BK-1a2b3c4d`. */

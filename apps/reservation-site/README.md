@@ -7,8 +7,8 @@
 
 - **バックエンド**: [Hono](https://hono.dev/)（`@hono/node-server`）
 - **フロントエンド**: React 18 + Vite + TypeScript + Tailwind CSS
-- **予約ロジック**: `@sleepy-beds/beds24-booking-sdk`（在庫・料金・Stripe Checkout・確認メール）
-- **通知（任意）**: `@sleepy-beds/beds24-line`（予約成立時に LINE push）
+- **予約ロジック**: `@sleepy-beds/booking`（在庫・料金・Stripe Checkout・確認メール）
+- **通知（任意）**: `@sleepy-beds/line`（予約成立時に LINE push）
 
 ## モード
 

@@ -4,8 +4,8 @@ import {
   type BookingSDKConfig,
   type Beds24RoomCalendar,
   type BookingNotification,
-} from "@sleepy-beds/beds24-booking-sdk";
-import { Beds24LineNotifier } from "@sleepy-beds/beds24-line";
+} from "@sleepy-beds/booking";
+import { Beds24LineNotifier } from "@sleepy-beds/line";
 import { env, property } from "./config.js";
 import {
   type BookingService,

@@ -1,5 +1,5 @@
 // ============================================================
-// beds24-sdk — Type Definitions
+// @sleepy-beds/sdk — Type Definitions
 // Pure Beds24 API v2 types. No Stripe / Resend / email coupling.
 // ============================================================
 

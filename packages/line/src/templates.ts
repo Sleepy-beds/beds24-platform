@@ -1,4 +1,4 @@
-import type { Beds24Booking } from "@sleepy-beds/beds24-sdk";
+import type { Beds24Booking } from "@sleepy-beds/sdk";
 import type { BookingSummary, LineEvent, LineTextMessage } from "./types";
 
 const WEEKDAYS_JA = ["日", "月", "火", "水", "木", "金", "土"];

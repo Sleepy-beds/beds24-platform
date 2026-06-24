@@ -6,13 +6,13 @@ description: "Read availability and bookings from Beds24 in a few lines."
 ## Install
 
 ```bash
-npm install @sleepy-beds/beds24-sdk
+npm install @sleepy-beds/sdk
 ```
 
 ## Create a client
 
 ```ts
-import { Beds24Client } from "@sleepy-beds/beds24-sdk";
+import { Beds24Client } from "@sleepy-beds/sdk";
 
 const client = new Beds24Client({
   refreshToken: process.env.BEDS24_REFRESH_TOKEN,
@@ -61,6 +61,6 @@ await client.cancelBooking(id);
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Send LINE notifications" icon="comment" href="/packages/beds24-line" />
-  <Card title="Add Next.js endpoints" icon="bolt" href="/packages/beds24-nextjs" />
+  <Card title="Send LINE notifications" icon="comment" href="/packages/line" />
+  <Card title="Add Next.js endpoints" icon="bolt" href="/packages/nextjs" />
 </CardGroup>

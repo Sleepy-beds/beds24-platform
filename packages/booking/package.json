@@ -1,5 +1,5 @@
 {
-  "name": "@sleepy-beds/beds24-booking-sdk",
+  "name": "@sleepy-beds/booking",
   "version": "0.3.0",
   "publishConfig": {
     "access": "public"
@@ -9,12 +9,12 @@
   "author": "Wataru Shirako (https://github.com/WataruShirako)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/WataruShirako/beds24-booking-sdk.git",
+    "url": "https://github.com/Sleepy-beds/beds24-platform.git",
     "directory": "packages/booking"
   },
-  "homepage": "https://github.com/WataruShirako/beds24-booking-sdk/tree/main/packages/booking#readme",
+  "homepage": "https://github.com/Sleepy-beds/beds24-platform/tree/main/packages/booking#readme",
   "bugs": {
-    "url": "https://github.com/WataruShirako/beds24-booking-sdk/issues"
+    "url": "https://github.com/Sleepy-beds/beds24-platform/issues"
   },
   "keywords": [
     "beds24",
@@ -65,7 +65,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@sleepy-beds/beds24-sdk": "workspace:*"
+    "@sleepy-beds/sdk": "workspace:*"
   },
   "peerDependencies": {
     "stripe": ">=15.0.0",

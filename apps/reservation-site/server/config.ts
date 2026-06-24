@@ -1,5 +1,5 @@
 import "dotenv/config";
-import type { PropertyConfig } from "@sleepy-beds/beds24-booking-sdk";
+import type { PropertyConfig } from "@sleepy-beds/booking";
 
 function num(value: string | undefined, fallback: number): number {
   const n = Number(value);

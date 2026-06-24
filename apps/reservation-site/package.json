@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
-    "@sleepy-beds/beds24-booking-sdk": "workspace:*",
-    "@sleepy-beds/beds24-line": "workspace:*",
-    "@sleepy-beds/beds24-sdk": "workspace:*",
+    "@sleepy-beds/booking": "workspace:*",
+    "@sleepy-beds/line": "workspace:*",
+    "@sleepy-beds/sdk": "workspace:*",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
     "hono": "^4.6.14",

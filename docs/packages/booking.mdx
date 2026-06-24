@@ -4,16 +4,16 @@ description: "All-in-one booking flow: Beds24 + Stripe + Resend."
 ---
 
 ```bash
-npm install @sleepy-beds/beds24-booking-sdk stripe resend
+npm install @sleepy-beds/booking stripe resend
 ```
 
 A higher-level SDK that ties together availability, pricing, Stripe checkout, Beds24 booking
-creation, and confirmation emails — built on [`beds24-sdk`](/packages/beds24-sdk).
+creation, and confirmation emails — built on [`beds24-sdk`](/packages/sdk).
 
 ## Setup
 
 ```ts
-import { BookingSDK } from "@sleepy-beds/beds24-booking-sdk";
+import { BookingSDK } from "@sleepy-beds/booking";
 
 const sdk = new BookingSDK({
   beds24: { refreshToken: process.env.BEDS24_REFRESH_TOKEN!, roomId: 12345 },

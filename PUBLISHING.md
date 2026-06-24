@@ -4,10 +4,10 @@ All packages publish to npm under the **`@sleepy-beds`** scope:
 
 | Package directory | npm name |
 | ----------------- | -------- |
-| `packages/beds24-sdk` | `@sleepy-beds/beds24-sdk` |
-| `packages/booking` | `@sleepy-beds/beds24-booking-sdk` |
-| `packages/beds24-line` | `@sleepy-beds/beds24-line` |
-| `packages/beds24-nextjs` | `@sleepy-beds/beds24-nextjs` |
+| `packages/sdk` | `@sleepy-beds/sdk` |
+| `packages/booking` | `@sleepy-beds/booking` |
+| `packages/line` | `@sleepy-beds/line` |
+| `packages/nextjs` | `@sleepy-beds/nextjs` |
 
 Each package sets `publishConfig.access = "public"` (scoped packages are private by
 default) and ships its own `LICENSE`, `README.md`, and `dist/`.
@@ -65,8 +65,8 @@ Then `pnpm changeset` per change, and `pnpm changeset version` + publish on rele
 
 ## Notes
 
-- The unscoped name `beds24-sdk` is owned by an unrelated placeholder on npm — this is
-  why we use the `@sleepy-beds` scope. (`beds24-booking-sdk` unscoped was previously
-  published under a personal account; the scoped package supersedes it.)
+- All packages publish under the **`@sleepy-beds`** scope; the package name is just the
+  role (`sdk`, `booking`, `line`, `nextjs`). An earlier unscoped `beds24-booking-sdk`
+  package on a personal account is superseded by `@sleepy-beds/booking`.
 - npm **provenance** can be enabled later by adding `--provenance` to the publish step
   (the release workflow already grants `id-token: write`).

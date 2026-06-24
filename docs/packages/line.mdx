@@ -4,7 +4,7 @@ description: "LINE notifications for Beds24 booking events."
 ---
 
 ```bash
-npm install @sleepy-beds/beds24-line
+npm install @sleepy-beds/line
 ```
 
 Send LINE notifications for new bookings, cancellations, and check-in reminders.
@@ -17,7 +17,7 @@ Send LINE notifications for new bookings, cancellations, and check-in reminders.
 ## Quick start
 
 ```ts
-import { Beds24LineNotifier } from "@sleepy-beds/beds24-line";
+import { Beds24LineNotifier } from "@sleepy-beds/line";
 
 const line = new Beds24LineNotifier({
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN!,
@@ -48,8 +48,8 @@ await line.notify({
 ## From a Beds24 booking
 
 ```ts
-import { Beds24Client } from "@sleepy-beds/beds24-sdk";
-import { Beds24LineNotifier, fromBeds24Booking } from "@sleepy-beds/beds24-line";
+import { Beds24Client } from "@sleepy-beds/sdk";
+import { Beds24LineNotifier, fromBeds24Booking } from "@sleepy-beds/line";
 
 const arrivals = await client.getBookings({ arrivalFrom: tomorrow, arrivalTo: tomorrow });
 for (const b of arrivals) {

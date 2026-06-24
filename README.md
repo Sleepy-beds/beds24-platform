@@ -3,31 +3,40 @@
 Make [Beds24](https://beds24.com) easy to use from a modern stack — Next.js, React,
 WordPress, LINE, Supabase, and webhook automation.
 
-This is a pnpm monorepo. The **core is a pure, dependency-free API client** (`beds24-sdk`);
-payments, email, LINE, and framework integrations are layered on top of it — never baked in.
+This is a pnpm monorepo. The **core is a pure, dependency-free API client**
+(`@sleepy-beds/sdk`); payments, email, LINE, and framework integrations are layered on
+top of it — never baked in. Packages are named Hono-style: the `@sleepy-beds` scope is
+the brand, and each package name is just its role.
 
 ## Packages
 
 | Package | Path | Status | Description |
 | ------- | ---- | ------ | ----------- |
-| [`beds24-sdk`](packages/beds24-sdk) | `packages/beds24-sdk` | ✅ core | Typed, zero-dependency Beds24 API v2 client with structured errors. |
-| [`beds24-booking-sdk`](packages/booking) | `packages/booking` | ✅ | All-in-one booking flow (Beds24 + Stripe + Resend) built on the core. |
-| [`beds24-line`](packages/beds24-line) | `packages/beds24-line` | ✅ | LINE notifications for booking events (new booking / cancellation / check-in reminder). |
-| [`beds24-nextjs`](packages/beds24-nextjs) | `packages/beds24-nextjs` | ✅ | Next.js App Router route handlers (availability / calendar / checkout / webhook). |
-| `beds24-wordpress` | _planned_ | ⬜ | WordPress plugin. |
-| [`examples/*`](examples) | `examples/` | ✅ | Runnable examples (LINE check-in reminder). |
-| [`docs`](docs) | `docs/` | ✅ | Mintlify documentation site. |
+| [`@sleepy-beds/sdk`](packages/sdk) | `packages/sdk` | ✅ core | Typed, zero-dependency Beds24 API v2 client with structured errors. |
+| [`@sleepy-beds/booking`](packages/booking) | `packages/booking` | ✅ | All-in-one booking flow (Beds24 + Stripe + Resend) built on the core. |
+| [`@sleepy-beds/line`](packages/line) | `packages/line` | ✅ | LINE notifications for booking events (new booking / cancellation / check-in reminder). |
+| [`@sleepy-beds/nextjs`](packages/nextjs) | `packages/nextjs` | ✅ | Next.js App Router route handlers (availability / calendar / checkout / webhook). |
+| `@sleepy-beds/wordpress` | _planned_ | ⬜ | WordPress plugin. |
+
+## Apps & examples
+
+| | Path | Description |
+| --- | ---- | ----------- |
+| [`reservation-site`](apps/reservation-site) | `apps/reservation-site` | Forkable booking-site template — Hono backend + React/Vite/Tailwind frontend. Runs in mock mode with zero setup. |
+| [`examples/*`](examples) | `examples/` | Runnable examples (LINE check-in reminder). |
+| [`docs`](docs) | `docs/` | Mintlify documentation site. |
 
 ## Roadmap
 
-- [x] Extract a pure `beds24-sdk` core (this restructure)
+- [x] Extract a pure `@sleepy-beds/sdk` core (this restructure)
 - [x] Structured `Beds24Error` with stable codes
 - [x] Unit tests + CI (GitHub Actions, Node 18/20/22)
-- [x] `beds24-line` — LINE notifications for booking events _(the differentiator)_
-- [x] `beds24-nextjs` — App Router route handlers
+- [x] `@sleepy-beds/line` — LINE notifications for booking events _(the differentiator)_
+- [x] `@sleepy-beds/nextjs` — App Router route handlers
+- [x] `reservation-site` — forkable booking-site template (Hono + React)
 - [x] Docs site (Mintlify scaffold in `docs/`)
 - [x] Examples (`examples/line-checkin-reminder`)
-- [ ] `beds24-wordpress` plugin
+- [ ] `@sleepy-beds/wordpress` plugin
 
 ## Development
 
@@ -43,13 +52,10 @@ pnpm -r test
 ## Publishing
 
 All packages publish under the **`@sleepy-beds`** npm scope
-(`@sleepy-beds/beds24-sdk`, `@sleepy-beds/beds24-booking-sdk`, `@sleepy-beds/beds24-line`,
-`@sleepy-beds/beds24-nextjs`).
+(`@sleepy-beds/sdk`, `@sleepy-beds/booking`, `@sleepy-beds/line`,
+`@sleepy-beds/nextjs`).
 See **[PUBLISHING.md](PUBLISHING.md)** for the one-time npm-org setup and the
 manual / CI release steps.
-
-> The unscoped name `beds24-sdk` is taken on npm by an unrelated placeholder, which is why
-> the scope is used.
 
 ## License
 

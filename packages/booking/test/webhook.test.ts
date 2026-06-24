@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import type Stripe from "stripe";
 import { handleWebhook, type WebhookHandlerConfig } from "../src/payment/webhook";
 import type { EmailSender } from "../src/email/sender";
-import type { Beds24Client } from "@sleepy-beds/beds24-sdk";
+import type { Beds24Client } from "@sleepy-beds/sdk";
 import type { PropertyConfig } from "../src/types";
 
 const property: PropertyConfig = {

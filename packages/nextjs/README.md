@@ -1,17 +1,17 @@
-# @sleepy-beds/beds24-nextjs
+# @sleepy-beds/nextjs
 
 Next.js **App Router** route handlers for the Beds24 booking SDK. Mount availability,
 calendar, checkout, and Stripe-webhook endpoints in a few lines.
 
 Part of the [Beds24 developer platform](../../README.md). Wraps
-[`@sleepy-beds/beds24-booking-sdk`](../booking). Zero runtime dependencies — the handlers
+[`@sleepy-beds/booking`](../booking). Zero runtime dependencies — the handlers
 are plain Web `Request → Response` functions, so they also work on any Web-standard runtime
 (Edge, Bun, Hono…).
 
 ## Install
 
 ```bash
-npm install @sleepy-beds/beds24-nextjs @sleepy-beds/beds24-booking-sdk
+npm install @sleepy-beds/nextjs @sleepy-beds/booking
 ```
 
 ## Usage
@@ -20,7 +20,7 @@ Create one SDK instance and expose the handlers from your route files.
 
 ```ts
 // lib/booking.ts
-import { BookingSDK } from "@sleepy-beds/beds24-booking-sdk";
+import { BookingSDK } from "@sleepy-beds/booking";
 
 export const sdk = new BookingSDK({
   /* beds24 / stripe / email / property / baseUrl */
@@ -29,7 +29,7 @@ export const sdk = new BookingSDK({
 
 ```ts
 // app/api/beds24/availability/route.ts
-import { availabilityHandler } from "@sleepy-beds/beds24-nextjs";
+import { availabilityHandler } from "@sleepy-beds/nextjs";
 import { sdk } from "@/lib/booking";
 
 export const GET = availabilityHandler(sdk);
@@ -37,7 +37,7 @@ export const GET = availabilityHandler(sdk);
 
 ```ts
 // app/api/beds24/checkout/route.ts
-import { checkoutHandler } from "@sleepy-beds/beds24-nextjs";
+import { checkoutHandler } from "@sleepy-beds/nextjs";
 import { sdk } from "@/lib/booking";
 
 export const POST = checkoutHandler(sdk);
@@ -45,7 +45,7 @@ export const POST = checkoutHandler(sdk);
 
 ```ts
 // app/api/beds24/webhook/route.ts
-import { webhookHandler } from "@sleepy-beds/beds24-nextjs";
+import { webhookHandler } from "@sleepy-beds/nextjs";
 import { sdk } from "@/lib/booking";
 
 export const POST = webhookHandler(sdk);
@@ -54,7 +54,7 @@ export const POST = webhookHandler(sdk);
 Or build them all at once:
 
 ```ts
-import { createBeds24Handlers } from "@sleepy-beds/beds24-nextjs";
+import { createBeds24Handlers } from "@sleepy-beds/nextjs";
 const handlers = createBeds24Handlers(sdk);
 // handlers.availability / .calendar / .checkout / .webhook
 ```
