@@ -1,0 +1,62 @@
+{
+  "name": "@sleepy-beds/nextjs",
+  "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Next.js App Router route handlers for the Beds24 booking SDK — availability, calendar, checkout, and Stripe webhook endpoints in a few lines.",
+  "license": "MIT",
+  "author": "Wataru Shirako (https://github.com/WataruShirako)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sleepy-beds/beds24-platform.git",
+    "directory": "packages/nextjs"
+  },
+  "homepage": "https://github.com/Sleepy-beds/beds24-platform/tree/main/packages/nextjs#readme",
+  "bugs": {
+    "url": "https://github.com/Sleepy-beds/beds24-platform/issues"
+  },
+  "keywords": [
+    "beds24",
+    "nextjs",
+    "app-router",
+    "route-handler",
+    "booking",
+    "stripe",
+    "vacation-rental"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "peerDependencies": {
+    "@sleepy-beds/booking": "workspace:^"
+  },
+  "devDependencies": {
+    "@sleepy-beds/booking": "workspace:*",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.9"
+  }
+}

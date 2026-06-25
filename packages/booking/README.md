@@ -1,4 +1,4 @@
-# @sleepy-beds/beds24-booking-sdk
+# @sleepy-beds/booking
 
 All-in-one booking SDK integrating [Beds24](https://beds24.com/) (PMS), [Stripe](https://stripe.com/) (payments), and [Resend](https://resend.com/) (email).
 
@@ -9,7 +9,7 @@ Handles availability checks, pricing, Stripe Checkout, Beds24 booking creation, 
 ## Installation
 
 ```bash
-npm install @sleepy-beds/beds24-booking-sdk stripe resend
+npm install @sleepy-beds/booking stripe resend
 ```
 
 `stripe` and `resend` are peer dependencies. `resend` is optional if you don't need email notifications.
@@ -17,7 +17,7 @@ npm install @sleepy-beds/beds24-booking-sdk stripe resend
 ## Setup
 
 ```typescript
-import { BookingSDK } from "@sleepy-beds/beds24-booking-sdk";
+import { BookingSDK } from "@sleepy-beds/booking";
 
 const sdk = new BookingSDK({
   beds24: {
@@ -80,7 +80,7 @@ const verified = sdk.verifyPriceFromCache("2026-05-01", "2026-05-03", 4);
 ### Stripe Checkout
 
 ```typescript
-import { isCheckoutError } from "@sleepy-beds/beds24-booking-sdk";
+import { isCheckoutError } from "@sleepy-beds/booking";
 
 const result = await sdk.createCheckout({
   checkIn: "2026-05-01",
@@ -124,13 +124,13 @@ export async function POST(request: Request) {
 ### LINE notification on booking (optional hook)
 
 Pass `onBookingCreated` in the SDK config to fire a side-effect after a paid booking is
-created — e.g. a LINE push via [`@sleepy-beds/beds24-line`](../beds24-line). It runs inside
+created — e.g. a LINE push via [`@sleepy-beds/line`](../line). It runs inside
 the webhook, is **best-effort** (errors are reported in `result.results.notification`, never
 failing the booking), and keeps this package decoupled from any specific notifier.
 
 ```typescript
-import { BookingSDK } from "@sleepy-beds/beds24-booking-sdk";
-import { Beds24LineNotifier } from "@sleepy-beds/beds24-line";
+import { BookingSDK } from "@sleepy-beds/booking";
+import { Beds24LineNotifier } from "@sleepy-beds/line";
 
 const line = new Beds24LineNotifier({
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN!,
@@ -160,7 +160,7 @@ Use the built-in Japanese booking confirmation templates standalone:
 import {
   generateBookingConfirmationEmail,
   generateOwnerNotificationEmail,
-} from "@sleepy-beds/beds24-booking-sdk/email";
+} from "@sleepy-beds/booking/email";
 
 const guestEmail = generateBookingConfirmationEmail(bookingData, propertyConfig);
 const ownerEmail = generateOwnerNotificationEmail(bookingData, propertyConfig);
@@ -171,10 +171,10 @@ const ownerEmail = generateOwnerNotificationEmail(bookingData, propertyConfig);
 Import only what you need:
 
 ```typescript
-import { Beds24Client } from "@sleepy-beds/beds24-sdk";
-import { PriceCache, calculateTotalPrice } from "@sleepy-beds/beds24-booking-sdk/pricing";
-import { EmailSender } from "@sleepy-beds/beds24-booking-sdk/email";
-import { validateCheckoutRequest } from "@sleepy-beds/beds24-booking-sdk/payment";
+import { Beds24Client } from "@sleepy-beds/sdk";
+import { PriceCache, calculateTotalPrice } from "@sleepy-beds/booking/pricing";
+import { EmailSender } from "@sleepy-beds/booking/email";
+import { validateCheckoutRequest } from "@sleepy-beds/booking/payment";
 ```
 
 ## Requirements

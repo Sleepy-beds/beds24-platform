@@ -12,8 +12,8 @@ booking is created, is best-effort (errors are reported, never failing the booki
 keeps the booking package decoupled from any specific notifier.
 
 ```ts
-import { BookingSDK } from "@sleepy-beds/beds24-booking-sdk";
-import { Beds24LineNotifier } from "@sleepy-beds/beds24-line";
+import { BookingSDK } from "@sleepy-beds/booking";
+import { Beds24LineNotifier } from "@sleepy-beds/line";
 
 const line = new Beds24LineNotifier({
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN!,
@@ -40,8 +40,8 @@ Pull tomorrow's arrivals and remind your group. This needs only `beds24-sdk` +
 `beds24-line` — no Stripe.
 
 ```ts
-import { Beds24Client } from "@sleepy-beds/beds24-sdk";
-import { Beds24LineNotifier, fromBeds24Booking } from "@sleepy-beds/beds24-line";
+import { Beds24Client } from "@sleepy-beds/sdk";
+import { Beds24LineNotifier, fromBeds24Booking } from "@sleepy-beds/line";
 
 const client = new Beds24Client({ refreshToken: process.env.BEDS24_REFRESH_TOKEN });
 const line = new Beds24LineNotifier({

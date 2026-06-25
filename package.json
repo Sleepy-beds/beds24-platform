@@ -1,5 +1,5 @@
 {
-  "name": "beds24-sdk-monorepo",
+  "name": "sleepy-beds-platform",
   "version": "0.0.0",
   "private": true,
   "description": "Beds24 developer platform — a typed core SDK plus booking, LINE, and framework integrations.",
@@ -7,7 +7,7 @@
   "author": "Wataru Shirako (https://github.com/WataruShirako)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/WataruShirako/beds24-booking-sdk.git"
+    "url": "https://github.com/Sleepy-beds/beds24-platform.git"
   },
   "scripts": {
     "build": "pnpm -r build",
